@@ -24,9 +24,7 @@ def tournament_list(request):
     return render(
         request,
         "tournaments/tournament_list.html",
-        {
-            "tournaments": tournaments,
-        }
+        {"tournaments": tournaments},
     )
 
 
@@ -34,25 +32,23 @@ def tournament_list(request):
 def tournament_detail(request, tournament_id):
     tournament = get_object_or_404(
         Tournament,
-        id=tournament_id
+        id=tournament_id,
     )
 
     registration = TournamentRegistration.objects.filter(
         tournament=tournament,
-        team__captain=request.user
+        team__captain=request.user,
     ).first()
 
-    registrations = TournamentRegistration.objects.filter(
-        tournament=tournament
-    ).select_related(
-        "team",
-        "team__captain"
-    ).prefetch_related(
-        "team__members__user"
-    ).order_by("-created_at")
+    registrations = (
+        TournamentRegistration.objects.filter(tournament=tournament)
+        .select_related("team", "team__captain")
+        .prefetch_related("team__members__user")
+        .order_by("-created_at")
+    )
 
     user_teams = Team.objects.filter(
-        captain=request.user
+        captain=request.user,
     ).order_by("name")
 
     is_organizer = request.user.pk == tournament.organizer_id
@@ -66,23 +62,13 @@ def tournament_detail(request, tournament_id):
             "registrations": registrations,
             "user_teams": user_teams,
             "is_organizer": is_organizer,
-        }
+        },
     )
 
 
 @login_required
 def tournament_create(request):
-    profile = getattr(request.user, "profile", None)
-
-    if profile is None or profile.role not in ["organizer", "admin"]:
-        messages.error(
-            request,
-            "Только организатор или администратор "
-            "может создавать турниры."
-        )
-
-        return redirect("tournament_list")
-
+    # Создавать турниры может любой вошедший пользователь.
     if request.method == "POST":
         form = TournamentCreateForm(request.POST)
 
@@ -93,12 +79,12 @@ def tournament_create(request):
 
             messages.success(
                 request,
-                "Турнир успешно создан!"
+                "Турнир успешно создан!",
             )
 
             return redirect(
                 "tournament_detail",
-                tournament_id=tournament.id
+                tournament_id=tournament.id,
             )
 
     else:
@@ -107,9 +93,7 @@ def tournament_create(request):
     return render(
         request,
         "tournaments/tournament_create.html",
-        {
-            "form": form,
-        }
+        {"form": form},
     )
 
 
@@ -117,25 +101,25 @@ def tournament_create(request):
 def tournament_register(request, tournament_id):
     tournament = get_object_or_404(
         Tournament,
-        id=tournament_id
+        id=tournament_id,
     )
 
     if tournament.status != "registration":
         messages.error(
             request,
-            "Регистрация на этот турнир уже закрыта."
+            "Регистрация на этот турнир уже закрыта.",
         )
 
         return redirect(
             "tournament_detail",
-            tournament_id=tournament.id
+            tournament_id=tournament.id,
         )
 
     if request.method == "POST":
         form = TournamentRegistrationForm(
             request.user,
             tournament,
-            request.POST
+            request.POST,
         )
 
         if form.is_valid():
@@ -143,24 +127,24 @@ def tournament_register(request, tournament_id):
 
             TournamentRegistration.objects.create(
                 tournament=tournament,
-                team=team
+                team=team,
             )
 
             messages.success(
                 request,
                 f"Команда «{team.name}» успешно зарегистрирована "
-                f"на турнир!"
+                f"на турнир!",
             )
 
             return redirect(
                 "tournament_detail",
-                tournament_id=tournament.id
+                tournament_id=tournament.id,
             )
 
     else:
         form = TournamentRegistrationForm(
             request.user,
-            tournament
+            tournament,
         )
 
     return render(
@@ -169,7 +153,7 @@ def tournament_register(request, tournament_id):
         {
             "tournament": tournament,
             "form": form,
-        }
+        },
     )
 
 
@@ -178,17 +162,15 @@ def tournament_applications(request, tournament_id):
     tournament = get_object_or_404(
         Tournament,
         id=tournament_id,
-        organizer=request.user
+        organizer=request.user,
     )
 
-    registrations = TournamentRegistration.objects.filter(
-        tournament=tournament
-    ).select_related(
-        "team",
-        "team__captain"
-    ).prefetch_related(
-        "team__members__user"
-    ).order_by("-created_at")
+    registrations = (
+        TournamentRegistration.objects.filter(tournament=tournament)
+        .select_related("team", "team__captain")
+        .prefetch_related("team__members__user")
+        .order_by("-created_at")
+    )
 
     return render(
         request,
@@ -196,7 +178,7 @@ def tournament_applications(request, tournament_id):
         {
             "tournament": tournament,
             "registrations": registrations,
-        }
+        },
     )
 
 
@@ -208,7 +190,7 @@ def accept_tournament_registration(request, registration_id):
     registration = get_object_or_404(
         TournamentRegistration,
         id=registration_id,
-        tournament__organizer=request.user
+        tournament__organizer=request.user,
     )
 
     registration.status = "accepted"
@@ -216,12 +198,12 @@ def accept_tournament_registration(request, registration_id):
 
     messages.success(
         request,
-        f"Команда «{registration.team.name}» принята в турнир."
+        f"Команда «{registration.team.name}» принята в турнир.",
     )
 
     return redirect(
         "tournament_applications",
-        tournament_id=registration.tournament.id
+        tournament_id=registration.tournament.id,
     )
 
 
@@ -233,7 +215,7 @@ def reject_tournament_registration(request, registration_id):
     registration = get_object_or_404(
         TournamentRegistration,
         id=registration_id,
-        tournament__organizer=request.user
+        tournament__organizer=request.user,
     )
 
     registration.status = "rejected"
@@ -241,12 +223,12 @@ def reject_tournament_registration(request, registration_id):
 
     messages.success(
         request,
-        f"Заявка команды «{registration.team.name}» отклонена."
+        f"Заявка команды «{registration.team.name}» отклонена.",
     )
 
     return redirect(
         "tournament_applications",
-        tournament_id=registration.tournament.id
+        tournament_id=registration.tournament.id,
     )
 
 
@@ -258,7 +240,7 @@ def remove_team_from_tournament(request, registration_id):
     registration = get_object_or_404(
         TournamentRegistration,
         id=registration_id,
-        tournament__organizer=request.user
+        tournament__organizer=request.user,
     )
 
     tournament_id = registration.tournament.id
@@ -268,12 +250,12 @@ def remove_team_from_tournament(request, registration_id):
 
     messages.success(
         request,
-        f"Команда «{team_name}» удалена из турнира."
+        f"Команда «{team_name}» удалена из турнира.",
     )
 
     return redirect(
         "tournament_applications",
-        tournament_id=tournament_id
+        tournament_id=tournament_id,
     )
 
 
@@ -282,13 +264,13 @@ def tournament_edit(request, tournament_id):
     tournament = get_object_or_404(
         Tournament,
         id=tournament_id,
-        organizer=request.user
+        organizer=request.user,
     )
 
     if request.method == "POST":
         form = TournamentCreateForm(
             request.POST,
-            instance=tournament
+            instance=tournament,
         )
 
         if form.is_valid():
@@ -296,17 +278,17 @@ def tournament_edit(request, tournament_id):
 
             messages.success(
                 request,
-                "Турнир успешно изменён."
+                "Турнир успешно изменён.",
             )
 
             return redirect(
                 "tournament_detail",
-                tournament_id=tournament.id
+                tournament_id=tournament.id,
             )
 
     else:
         form = TournamentCreateForm(
-            instance=tournament
+            instance=tournament,
         )
 
     return render(
@@ -315,7 +297,7 @@ def tournament_edit(request, tournament_id):
         {
             "form": form,
             "tournament": tournament,
-        }
+        },
     )
 
 
@@ -324,29 +306,24 @@ def tournament_delete(request, tournament_id):
     tournament = get_object_or_404(
         Tournament,
         id=tournament_id,
-        organizer=request.user
+        organizer=request.user,
     )
 
     if request.method == "POST":
         tournament_name = tournament.name
-
         tournament.delete()
 
         messages.success(
             request,
-            f"Турнир «{tournament_name}» удалён."
+            f"Турнир «{tournament_name}» удалён.",
         )
 
-        return redirect(
-            "tournament_list"
-        )
+        return redirect("tournament_list")
 
     return render(
         request,
         "tournaments/tournament_delete.html",
-        {
-            "tournament": tournament,
-        }
+        {"tournament": tournament},
     )
 
 
@@ -355,46 +332,43 @@ def tournament_draw(request, tournament_id):
     tournament = get_object_or_404(
         Tournament,
         id=tournament_id,
-        organizer=request.user
+        organizer=request.user,
     )
 
     if request.method != "POST":
         return redirect(
             "tournament_detail",
-            tournament_id=tournament.id
+            tournament_id=tournament.id,
         )
 
     if tournament.status != "registration":
         messages.error(
             request,
-            "Жеребьёвку уже нельзя провести."
+            "Жеребьёвку уже нельзя провести.",
         )
 
         return redirect(
             "tournament_detail",
-            tournament_id=tournament.id
+            tournament_id=tournament.id,
         )
 
-    existing_matches = Match.objects.filter(
-        tournament=tournament
-    ).exists()
-
-    if existing_matches:
+    if Match.objects.filter(tournament=tournament).exists():
         messages.error(
             request,
-            "Жеребьёвка для этого турнира уже проведена."
+            "Жеребьёвка для этого турнира уже проведена.",
         )
 
         return redirect(
             "tournament_bracket",
-            tournament_id=tournament.id
+            tournament_id=tournament.id,
         )
 
-    registrations = TournamentRegistration.objects.filter(
-        tournament=tournament,
-        status="accepted"
-    ).select_related(
-        "team"
+    registrations = (
+        TournamentRegistration.objects.filter(
+            tournament=tournament,
+            status="accepted",
+        )
+        .select_related("team")
     )
 
     teams = [
@@ -405,12 +379,12 @@ def tournament_draw(request, tournament_id):
     if len(teams) < 2:
         messages.error(
             request,
-            "Для жеребьёвки необходимо минимум 2 принятые команды."
+            "Для жеребьёвки необходимо минимум 2 принятые команды.",
         )
 
         return redirect(
             "tournament_applications",
-            tournament_id=tournament.id
+            tournament_id=tournament.id,
         )
 
     if len(teams) > tournament.max_teams:
@@ -421,11 +395,9 @@ def tournament_draw(request, tournament_id):
     match_number = 1
 
     for i in range(0, len(teams), 2):
-
         team1 = teams[i]
 
         if i + 1 < len(teams):
-
             team2 = teams[i + 1]
 
             Match.objects.create(
@@ -434,11 +406,9 @@ def tournament_draw(request, tournament_id):
                 match_number=match_number,
                 team1=team1,
                 team2=team2,
-                status="pending"
+                status="pending",
             )
-
         else:
-
             Match.objects.create(
                 tournament=tournament,
                 round_number=1,
@@ -446,7 +416,7 @@ def tournament_draw(request, tournament_id):
                 team1=team1,
                 team2=None,
                 winner=team1,
-                status="finished"
+                status="finished",
             )
 
         match_number += 1
@@ -456,10 +426,10 @@ def tournament_draw(request, tournament_id):
 
     messages.success(
         request,
-        "Жеребьёвка успешно проведена! Сетка турнира создана."
+        "Жеребьёвка успешно проведена! Сетка турнира создана.",
     )
 
     return redirect(
         "tournament_bracket",
-        tournament_id=tournament.id
+        tournament_id=tournament.id,
     )
