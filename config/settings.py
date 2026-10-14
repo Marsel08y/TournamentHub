@@ -1,15 +1,14 @@
-
 import os
 from pathlib import Path
 
 import dj_database_url
 
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Безопасные настройки
 SECRET_KEY = os.environ.get(
     "DJANGO_SECRET_KEY",
-    "django-insecure-local-development-only-change-before-deploy"
+    "django-insecure-local-development-only-change-before-deploy",
 )
 
 DEBUG = os.environ.get("DEBUG", "True").lower() in ("true", "1", "yes")
@@ -17,18 +16,22 @@ DEBUG = os.environ.get("DEBUG", "True").lower() in ("true", "1", "yes")
 ALLOWED_HOSTS = [
     host.strip()
     for host in os.environ.get(
-        "ALLOWED_HOSTS", "127.0.0.1,localhost"
+        "ALLOWED_HOSTS",
+        "127.0.0.1,localhost",
     ).split(",")
     if host.strip()
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     origin.strip()
-    for origin in os.environ.get("CSRF_TRUSTED_ORIGINS", "").split(",")
+    for origin in os.environ.get(
+        "CSRF_TRUSTED_ORIGINS",
+        "",
+    ).split(",")
     if origin.strip()
 ]
 
-# Приложения
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -36,14 +39,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
     "accounts",
     "teams",
     "tournaments",
     "matches",
 ]
 
-# Middleware
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
@@ -55,7 +57,9 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+
 ROOT_URLCONF = "config.urls"
+
 
 TEMPLATES = [
     {
@@ -64,7 +68,6 @@ TEMPLATES = [
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
-                "django.template.context_processors.debug",
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
@@ -73,10 +76,10 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = "config.wsgi.application"
 
-# База данных:
-# локально используется SQLite, на Render можно подключить PostgreSQL
+
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
 if DATABASE_URL:
@@ -95,7 +98,7 @@ else:
         }
     }
 
-# Проверка паролей
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": (
@@ -123,14 +126,18 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Язык и время
+
 LANGUAGE_CODE = "ru-ru"
+
 TIME_ZONE = "Asia/Bishkek"
+
 USE_I18N = True
+
 USE_TZ = True
 
-# Статические файлы
+
 STATIC_URL = "/static/"
+
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 STATICFILES_DIRS = (
@@ -148,15 +155,11 @@ STORAGES = {
     },
 }
 
-# Авторизация
-LOGIN_REDIRECT_URL = "/"
-LOGOUT_REDIRECT_URL = "/"
-LOGIN_URL = "/accounts/login/"
 
-# Безопасность HTTPS на публичном сервере
 if not DEBUG:
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
+
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
