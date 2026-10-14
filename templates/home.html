@@ -1,428 +1,581 @@
 <!DOCTYPE html>
-
 <html lang="ru">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>TournamentHub</title>
-
-<style>
-    * {
-        box-sizing: border-box;
-    }
-
-    body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background:
-            radial-gradient(circle at top right, rgba(37, 99, 235, 0.08), transparent 35%),
-            #f5f7fb;
-        color: #1f2937;
-    }
-
-    /* =========================
-       БОКОВАЯ ПАНЕЛЬ
-    ========================= */
-
-    .sidebar {
-        position: fixed;
-        left: 20px;
-        top: 20px;
-        bottom: 20px;
-        width: 245px;
-
-        background: rgba(255, 255, 255, 0.96);
-        border: 1px solid #e5e7eb;
-        border-radius: 22px;
-
-        padding: 24px 15px;
-
-        box-shadow: 0 12px 35px rgba(15, 23, 42, 0.08);
-
-        display: flex;
-        flex-direction: column;
-
-        z-index: 100;
-    }
-
-    .logo {
-        font-size: 23px;
-        font-weight: bold;
-
-        padding: 8px 15px 28px;
-
-        color: #2563eb;
-    }
-
-    .logo span {
-        color: #111827;
-    }
-
-    .menu {
-        display: flex;
-        flex-direction: column;
-        gap: 7px;
-    }
-
-    .menu a {
-        display: flex;
-        align-items: center;
-        gap: 13px;
-
-        padding: 13px 15px;
-
-        border-radius: 13px;
-
-        text-decoration: none;
-
-        color: #4b5563;
-
-        font-size: 15px;
-        font-weight: 500;
-
-        transition: 0.2s;
-    }
-
-    .menu a:hover {
-        background: #eef4ff;
-        color: #2563eb;
-        transform: translateX(2px);
-    }
-
-    .menu a.active {
-        background: #2563eb;
-        color: white;
-        box-shadow: 0 7px 18px rgba(37, 99, 235, 0.25);
-    }
-
-    .icon {
-        width: 22px;
-        text-align: center;
-        font-size: 18px;
-    }
-
-    .bottom-menu {
-        margin-top: auto;
-
-        border-top: 1px solid #e5e7eb;
-
-        padding-top: 15px;
-    }
-
-    .logout {
-        color: #dc2626 !important;
-    }
-
-    .logout:hover {
-        background: #fff1f2 !important;
-        color: #dc2626 !important;
-        transform: none !important;
-    }
-
-    /* =========================
-       ОСНОВНАЯ ЧАСТЬ
-    ========================= */
-
-    .main {
-        margin-left: 295px;
-
-        min-height: 100vh;
-
-        padding: 55px 50px 70px;
-    }
-
-    .content {
-        max-width: 950px;
-    }
-
-    /* =========================
-       ПРИВЕТСТВИЕ
-    ========================= */
-
-    .welcome {
-        position: relative;
-        overflow: hidden;
-
-        background: linear-gradient(
-            135deg,
-            #ffffff 0%,
-            #f7faff 100%
-        );
-
-        border: 1px solid #e5e7eb;
-        border-radius: 24px;
-
-        padding: 38px 40px;
-
-        box-shadow: 0 12px 35px rgba(15, 23, 42, 0.06);
-    }
-
-    .welcome::after {
-        content: "🏆";
-
-        position: absolute;
-        right: 35px;
-        top: 25px;
-
-        font-size: 80px;
-        opacity: 0.08;
-    }
-
-    .welcome h1 {
-        position: relative;
-        z-index: 1;
-
-        margin: 0 0 12px;
-
-        font-size: 36px;
-        line-height: 1.2;
-
-        color: #111827;
-    }
-
-    .welcome h1 span {
-        color: #2563eb;
-    }
-
-    .welcome p {
-        position: relative;
-        z-index: 1;
-
-        margin: 0;
-
-        max-width: 680px;
-
-        font-size: 16px;
-
-        color: #6b7280;
-
-        line-height: 1.7;
-    }
-
-    /* =========================
-       КАРТОЧКИ
-    ========================= */
-
-    .info-card {
-        margin-top: 25px;
-
-        background: #ffffff;
-
-        border: 1px solid #e5e7eb;
-        border-radius: 20px;
-
-        padding: 27px;
-
-        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
-    }
-
-    .info-card h2 {
-        margin: 0 0 18px;
-
-        font-size: 21px;
-
-        color: #111827;
-    }
-
-    .info-card p {
-        color: #6b7280;
-        line-height: 1.7;
-    }
-
-    /* =========================
-       ЗАЯВКИ
-    ========================= */
-
-    .registration-card {
-        display: block;
-
-        background: #f8fafc;
-
-        border: 1px solid #e5e7eb;
-
-        border-radius: 15px;
-
-        padding: 18px;
-
-        margin-top: 12px;
-
-        text-decoration: none;
-
-        color: #1f2937;
-
-        transition: 0.2s;
-    }
-
-    .registration-card:hover {
-        border-color: #93b4ff;
-
-        background: #f5f8ff;
-
-        transform: translateY(-2px);
-
-        box-shadow: 0 7px 18px rgba(37, 99, 235, 0.08);
-    }
-
-    .registration-title {
-        font-size: 18px;
-
-        font-weight: bold;
-
-        color: #2563eb;
-
-        margin-bottom: 10px;
-    }
-
-    .registration-info {
-        color: #6b7280;
-
-        margin-top: 7px;
-
-        font-size: 14px;
-    }
-
-    .registration-info strong {
-        color: #374151;
-    }
-
-    /* =========================
-       СТАТУСЫ
-    ========================= */
-
-    .status {
-        display: inline-block;
-
-        margin-top: 12px;
-
-        padding: 7px 11px;
-
-        border-radius: 8px;
-
-        font-size: 13px;
-        font-weight: 600;
-
-        background: #fef3c7;
-        color: #92400e;
-    }
-
-    .status.accepted {
-        background: #dcfce7;
-        color: #166534;
-    }
-
-    .status.rejected {
-        background: #fee2e2;
-        color: #991b1b;
-    }
-
-    /* =========================
-       ПУСТЫЕ БЛОКИ
-    ========================= */
-
-    .empty {
-        padding: 17px;
-
-        background: #f8fafc;
-
-        border: 1px dashed #d1d5db;
-
-        border-radius: 12px;
-
-        color: #6b7280;
-
-        text-align: center;
-    }
-
-    /* =========================
-       МОБИЛЬНАЯ ВЕРСИЯ
-    ========================= */
-
-    @media (max-width: 800px) {
+    <title>TournamentHub — Главная</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #090d18;
+            --panel: #111827;
+            --card: #151e30;
+            --card-hover: #1a2740;
+            --border: #27344d;
+            --text: #f1f5f9;
+            --muted: #9aa9c1;
+            --blue: #60a5fa;
+            --purple: #a78bfa;
+            --green: #4ade80;
+            --red: #fb7185;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background:
+                radial-gradient(
+                    circle at 80% 0%,
+                    rgba(37, 99, 235, 0.17),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at 10% 80%,
+                    rgba(124, 58, 237, 0.09),
+                    transparent 28%
+                ),
+                var(--bg);
+            color: var(--text);
+        }
+
+        a {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* БОКОВАЯ ПАНЕЛЬ */
 
         .sidebar {
-            position: relative;
-
-            left: auto;
-            top: auto;
-            bottom: auto;
-
-            width: calc(100% - 30px);
-
-            margin: 15px;
-
-            padding: 15px;
-
-            border-radius: 18px;
+            position: fixed;
+            left: 20px;
+            top: 20px;
+            bottom: 20px;
+            width: 250px;
+            padding: 24px 15px;
+            background: rgba(17, 24, 39, 0.94);
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+            backdrop-filter: blur(16px);
         }
 
         .logo {
-            padding-bottom: 15px;
+            padding: 8px 12px 30px;
+            font-size: 22px;
+            font-weight: 800;
+            white-space: nowrap;
+            color: var(--blue);
+            letter-spacing: -0.6px;
+        }
+
+        .logo span {
+            color: var(--text);
         }
 
         .menu {
-            flex-direction: row;
-            flex-wrap: wrap;
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
         }
 
         .menu a {
-            flex: 1 1 45%;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 13px 14px;
+            border: 1px solid transparent;
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--muted);
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.2s ease;
+        }
+
+        .menu a:hover {
+            background: #1b2940;
+            border-color: #314361;
+            color: white;
+            transform: translateX(3px);
+        }
+
+        .menu a.active {
+            color: white;
+            background: linear-gradient(110deg, #2563eb, #6d5ce8);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.23);
+        }
+
+        .icon {
+            width: 23px;
+            text-align: center;
+            font-size: 18px;
+            flex-shrink: 0;
         }
 
         .bottom-menu {
-            margin-top: 10px;
+            margin-top: auto;
+            padding-top: 15px;
+            border-top: 1px solid var(--border);
         }
+
+        .menu a.logout {
+            color: var(--red);
+        }
+
+        .menu a.logout:hover {
+            background: rgba(251, 113, 133, 0.1);
+            border-color: rgba(251, 113, 133, 0.2);
+            transform: none;
+        }
+
+        /* ОСНОВНАЯ ЧАСТЬ */
 
         .main {
-            margin-left: 0;
-
-            padding: 20px 15px 40px;
+            margin-left: 300px;
+            min-height: 100vh;
+            padding: 45px 45px 65px;
         }
+
+        .content {
+            max-width: 1050px;
+            margin: 0 auto;
+        }
+
+        /* ПРИВЕТСТВИЕ */
 
         .welcome {
-            padding: 28px 24px;
-        }
-
-        .welcome h1 {
-            font-size: 29px;
+            position: relative;
+            overflow: hidden;
+            padding: 43px 40px;
+            border: 1px solid #34476b;
+            border-radius: 24px;
+            background:
+                radial-gradient(
+                    circle at 90% 20%,
+                    rgba(167, 139, 250, 0.22),
+                    transparent 30%
+                ),
+                linear-gradient(135deg, #172747, #121a2d 75%);
+            box-shadow: 0 18px 50px rgba(0, 0, 0, 0.2);
         }
 
         .welcome::after {
-            display: none;
+            content: "🏆";
+            position: absolute;
+            right: 35px;
+            top: 30px;
+            font-size: 100px;
+            opacity: 0.16;
+            transform: rotate(10deg);
+            pointer-events: none;
         }
 
-        .info-card {
-            padding: 22px;
-        }
-    }
-
-    @media (max-width: 500px) {
-
-        .menu a {
-            flex: 1 1 100%;
+        .eyebrow {
+            position: relative;
+            z-index: 1;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 11px;
+            margin-bottom: 18px;
+            border: 1px solid rgba(96, 165, 250, 0.25);
+            border-radius: 30px;
+            background: rgba(59, 130, 246, 0.1);
+            color: #93c5fd;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
         .welcome h1 {
-            font-size: 25px;
+            position: relative;
+            z-index: 1;
+            margin: 0 0 15px;
+            max-width: 700px;
+            font-size: clamp(29px, 4vw, 42px);
+            line-height: 1.2;
+            letter-spacing: -1.3px;
         }
-    }
-</style>
 
+        .welcome h1 span {
+            display: inline-block;
+            background: linear-gradient(90deg, #60a5fa, #c4b5fd);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .welcome p {
+            position: relative;
+            z-index: 1;
+            margin: 0;
+            max-width: 620px;
+            color: #b7c5dc;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        .welcome-actions {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 26px;
+        }
+
+        .button {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            min-height: 44px;
+            padding: 12px 18px;
+            border: 1px solid transparent;
+            border-radius: 11px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            transition: 0.2s ease;
+        }
+
+        .button-primary {
+            background: linear-gradient(110deg, #3b82f6, #7059e8);
+            color: white;
+            box-shadow: 0 7px 20px rgba(59, 130, 246, 0.22);
+        }
+
+        .button-primary:hover {
+            filter: brightness(1.12);
+            transform: translateY(-2px);
+        }
+
+        .button-secondary {
+            border-color: #405171;
+            background: rgba(255, 255, 255, 0.04);
+            color: #e2e8f0;
+        }
+
+        .button-secondary:hover {
+            background: rgba(255, 255, 255, 0.09);
+            border-color: #6680a9;
+        }
+
+        /* КАРТОЧКИ */
+
+        .info-card {
+            margin-top: 25px;
+            padding: 27px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: linear-gradient(
+                145deg,
+                rgba(21, 30, 48, 0.98),
+                rgba(15, 23, 39, 0.98)
+            );
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .section-icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 43px;
+            height: 43px;
+            flex-shrink: 0;
+            border: 1px solid #34466a;
+            border-radius: 13px;
+            background: #1b2a46;
+            font-size: 21px;
+        }
+
+        .section-heading h2 {
+            margin: 0;
+            font-size: 19px;
+            line-height: 1.4;
+        }
+
+        .section-subtitle {
+            margin: 5px 0 0;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .info-card > p {
+            color: var(--muted);
+            line-height: 1.8;
+            font-size: 14px;
+        }
+
+        /* ЗАЯВКИ И КОМАНДЫ */
+
+        .registration-card {
+            display: block;
+            padding: 19px;
+            margin-top: 12px;
+            border: 1px solid #293853;
+            border-radius: 15px;
+            background: rgba(24, 36, 57, 0.65);
+            text-decoration: none;
+            color: var(--text);
+            transition: 0.22s ease;
+        }
+
+        .registration-card:hover {
+            background: var(--card-hover);
+            border-color: #5478b8;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.17);
+        }
+
+        .registration-title {
+            margin-bottom: 12px;
+            color: #93c5fd;
+            font-size: 17px;
+            font-weight: 700;
+            overflow-wrap: anywhere;
+        }
+
+        .registration-info {
+            margin-top: 9px;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .registration-info strong {
+            color: #e2e8f0;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 14px;
+            padding: 7px 11px;
+            border: 1px solid rgba(251, 191, 36, 0.2);
+            border-radius: 8px;
+            background: rgba(251, 191, 36, 0.1);
+            color: #fcd34d;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .status.accepted {
+            border-color: rgba(74, 222, 128, 0.2);
+            background: rgba(74, 222, 128, 0.1);
+            color: var(--green);
+        }
+
+        .status.rejected {
+            border-color: rgba(251, 113, 133, 0.2);
+            background: rgba(251, 113, 133, 0.1);
+            color: var(--red);
+        }
+
+        .empty {
+            padding: 25px 18px;
+            border: 1px dashed #34445f;
+            border-radius: 13px;
+            background: rgba(9, 15, 27, 0.35);
+            color: var(--muted);
+            text-align: center;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .empty-icon {
+            display: block;
+            margin-bottom: 9px;
+            font-size: 28px;
+        }
+
+        /* НИЖНИЙ БЛОК */
+
+        .start-card {
+            position: relative;
+            overflow: hidden;
+            border-color: #39426b;
+            background:
+                radial-gradient(
+                    circle at 100% 0,
+                    rgba(124, 58, 237, 0.16),
+                    transparent 40%
+                ),
+                var(--panel);
+        }
+
+        .start-card h2 {
+            margin: 0 0 10px;
+            font-size: 20px;
+        }
+
+        /* АДАПТАЦИЯ */
+
+        @media (max-width: 1000px) {
+            .sidebar {
+                width: 220px;
+            }
+
+            .main {
+                margin-left: 260px;
+                padding: 35px 25px 50px;
+            }
+
+            .welcome {
+                padding: 35px 28px;
+            }
+
+            .welcome::after {
+                right: 20px;
+                font-size: 75px;
+            }
+        }
+
+        @media (max-width: 800px) {
+            .sidebar {
+                position: relative;
+                inset: auto;
+                width: calc(100% - 30px);
+                margin: 15px;
+                padding: 16px;
+                border-radius: 18px;
+            }
+
+            .logo {
+                padding: 6px 8px 18px;
+            }
+
+            .menu {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 7px;
+            }
+
+            .menu a {
+                padding: 12px 10px;
+                font-size: 13px;
+            }
+
+            .menu a:hover {
+                transform: none;
+            }
+
+            .bottom-menu {
+                margin-top: 12px;
+                padding-top: 10px;
+            }
+
+            .bottom-menu .menu a {
+                width: 100%;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 12px 15px 35px;
+            }
+
+            .welcome {
+                padding: 30px 23px;
+            }
+
+            .welcome::after {
+                display: none;
+            }
+
+            .welcome h1 {
+                font-size: 31px;
+            }
+
+            .info-card {
+                padding: 21px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .menu {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .menu a {
+                gap: 8px;
+                padding: 12px 9px;
+                font-size: 12px;
+            }
+
+            .icon {
+                width: 19px;
+                font-size: 16px;
+            }
+
+            .welcome {
+                padding: 25px 19px;
+                border-radius: 19px;
+            }
+
+            .welcome h1 {
+                font-size: 27px;
+                letter-spacing: -0.6px;
+            }
+
+            .welcome p {
+                font-size: 14px;
+            }
+
+            .welcome-actions {
+                flex-direction: column;
+            }
+
+            .button {
+                width: 100%;
+            }
+
+            .info-card {
+                padding: 17px;
+                border-radius: 17px;
+            }
+
+            .section-heading h2 {
+                font-size: 16px;
+            }
+
+            .registration-card {
+                padding: 15px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                transition: none !important;
+                scroll-behavior: auto !important;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<!-- Боковая панель -->
-
 <aside class="sidebar">
-
-    <div class="logo">
-        🏆 <span>Tournament</span>Hub
-    </div>
+    <div class="logo">🏆 <span>Tournament</span>Hub</div>
 
     <nav class="menu">
-
         <a href="{% url 'home' %}" class="active">
             <span class="icon">🏠</span>
             Главная
@@ -447,60 +600,63 @@
             <span class="icon">👤</span>
             Профиль
         </a>
-
     </nav>
 
     <div class="bottom-menu">
-
-        <a href="{% url 'logout' %}" class="menu a logout">
-            <span class="icon">🚪</span>
-            Выйти
-        </a>
-
+        <nav class="menu">
+            <a href="{% url 'logout' %}" class="logout">
+                <span class="icon">🚪</span>
+                Выйти
+            </a>
+        </nav>
     </div>
-
 </aside>
 
-
-<!-- Основная часть -->
-
 <main class="main">
-
     <div class="content">
 
-        <!-- Приветствие -->
-
         <section class="welcome">
+            <div class="eyebrow">⚡ Твоя арена соревнований</div>
 
             <h1>
                 Добро пожаловать в
-                <span>TournamentHub</span>!
+                <span>TournamentHub!</span>
             </h1>
 
             <p>
-                Платформа для создания команд,
-                участия в турнирах и проведения
-                соревнований.
+                Создавай команды, участвуй в турнирах,
+                соревнуйся с другими игроками и веди свою
+                команду к победе.
             </p>
 
+            <div class="welcome-actions">
+                <a href="{% url 'tournament_list' %}" class="button button-primary">
+                    🏆 Смотреть турниры
+                </a>
+
+                <a href="{% url 'team_list' %}" class="button button-secondary">
+                    👥 Мои команды
+                </a>
+            </div>
         </section>
 
-
-        <!-- Мои заявки -->
-
-        <div class="info-card">
-
-            <h2>🏆 Мои заявки на турниры</h2>
+        <section class="info-card">
+            <div class="section-heading">
+                <div class="section-icon">🏆</div>
+                <div>
+                    <h2>Мои заявки на турниры</h2>
+                    <p class="section-subtitle">
+                        Следи за состоянием своих заявок
+                    </p>
+                </div>
+            </div>
 
             {% if my_registrations %}
-
                 {% for registration in my_registrations %}
-
                     <a
                         class="registration-card"
                         href="{% url 'tournament_detail' registration.tournament.id %}"
                     >
-
                         <div class="registration-title">
                             {{ registration.tournament.name }}
                         </div>
@@ -516,55 +672,45 @@
                         </div>
 
                         {% if registration.status == "pending" %}
-
                             <span class="status">
                                 ⏳ Заявка на рассмотрении
                             </span>
-
                         {% elif registration.status == "accepted" %}
-
                             <span class="status accepted">
                                 🟢 Заявка принята
                             </span>
-
                         {% elif registration.status == "rejected" %}
-
                             <span class="status rejected">
                                 🔴 Заявка отклонена
                             </span>
-
                         {% endif %}
-
                     </a>
-
                 {% endfor %}
-
             {% else %}
-
                 <div class="empty">
+                    <span class="empty-icon">📭</span>
                     У вас пока нет заявок на турниры.
                 </div>
-
             {% endif %}
+        </section>
 
-        </div>
-
-
-        <!-- Последние зарегистрированные команды -->
-
-        <div class="info-card">
-
-            <h2>👥 Последние зарегистрированные команды</h2>
+        <section class="info-card">
+            <div class="section-heading">
+                <div class="section-icon">👥</div>
+                <div>
+                    <h2>Последние зарегистрированные команды</h2>
+                    <p class="section-subtitle">
+                        Команды, участвующие в соревнованиях
+                    </p>
+                </div>
+            </div>
 
             {% if recent_registrations %}
-
                 {% for registration in recent_registrations %}
-
                     <a
                         class="registration-card"
                         href="{% url 'tournament_detail' registration.tournament.id %}"
                     >
-
                         <div class="registration-title">
                             {{ registration.tournament.name }}
                         </div>
@@ -582,40 +728,42 @@
                         <span class="status accepted">
                             🟢 Участвует в турнире
                         </span>
-
                     </a>
-
                 {% endfor %}
-
             {% else %}
-
                 <div class="empty">
+                    <span class="empty-icon">🎮</span>
                     Пока нет принятых заявок.
                 </div>
-
             {% endif %}
+        </section>
 
-        </div>
-
-
-        <!-- Информация -->
-
-        <div class="info-card">
-
-            <h2>Начнём? 🚀</h2>
+        <section class="info-card start-card">
+            <div class="section-heading">
+                <div class="section-icon">🚀</div>
+                <div>
+                    <h2>Готов к соревнованиям?</h2>
+                    <p class="section-subtitle">
+                        Следующий шаг к победе начинается здесь
+                    </p>
+                </div>
+            </div>
 
             <p>
-                Используйте меню слева, чтобы перейти
-                к командам, турнирам или посмотреть
-                свои приглашения.
+                Используй меню, чтобы перейти к турнирам,
+                управлять командами или посмотреть приглашения.
+                Найди соперников и докажи, на что способна твоя команда!
             </p>
 
-        </div>
+            <div class="welcome-actions">
+                <a href="{% url 'tournament_list' %}" class="button button-primary">
+                    Перейти к турнирам →
+                </a>
+            </div>
+        </section>
 
     </div>
-
 </main>
 
 </body>
-
 </html>
