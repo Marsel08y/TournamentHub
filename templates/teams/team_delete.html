@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Удаление команды — TournamentHub</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background:
+            radial-gradient(
+                circle at top right,
+                rgba(220, 38, 38, 0.08),
+                transparent 35%
+            ),
+            #f5f7fb;
+        color: #1f2937;
+    }
+
+    .container {
+        max-width: 600px;
+        margin: 90px auto;
+        padding: 20px;
+    }
+
+    .card {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 20px;
+        padding: 35px;
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+        text-align: center;
+    }
+
+    .icon {
+        width: 70px;
+        height: 70px;
+        margin: 0 auto 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: #fee2e2;
+        font-size: 32px;
+    }
+
+    h1 {
+        margin: 0 0 15px;
+        color: #111827;
+        font-size: 28px;
+    }
+
+    .team-name {
+        color: #dc2626;
+        font-weight: bold;
+    }
+
+    .warning {
+        margin: 25px 0;
+        padding: 18px;
+        background: #fff1f2;
+        border: 1px solid #fecdd3;
+        border-radius: 12px;
+        color: #9f1239;
+        line-height: 1.6;
+    }
+
+    .warning strong {
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    .warning p {
+        margin: 6px 0;
+        font-size: 14px;
+    }
+
+    .buttons {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 25px;
+    }
+
+    button,
+    .cancel {
+        min-width: 150px;
+        padding: 12px 20px;
+        border-radius: 10px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+    button {
+        border: none;
+        background: #dc2626;
+        color: white;
+    }
+
+    button:hover {
+        background: #b91c1c;
+        transform: translateY(-1px);
+    }
+
+    .cancel {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: #f3f4f6;
+        color: #374151;
+        border: 1px solid #e5e7eb;
+    }
+
+    .cancel:hover {
+        background: #e5e7eb;
+        transform: translateY(-1px);
+    }
+
+    @media (max-width: 600px) {
+        .container {
+            margin: 40px auto;
+            padding: 15px;
+        }
+
+        .card {
+            padding: 25px 20px;
+        }
+
+        h1 {
+            font-size: 24px;
+        }
+
+        .buttons {
+            flex-direction: column;
+        }
+
+        button,
+        .cancel {
+            width: 100%;
+        }
+    }
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="card">
+
+    <div class="icon">
+        🗑️
+    </div>
+
+    <h1>Удаление команды</h1>
+
+    <div class="warning">
+
+        <strong>
+            Вы действительно хотите удалить команду
+            <span class="team-name">
+                «{{ team.name }}»
+            </span>?
+        </strong>
+
+        <p>
+            Все участники и приглашения этой команды
+            будут удалены.
+        </p>
+
+        <p>
+            Если команда участвует в турнирах,
+            связанные заявки также могут быть удалены.
+        </p>
+
+        <p>
+            <strong>Это действие нельзя отменить.</strong>
+        </p>
+
+    </div>
+
+    <div class="buttons">
+
+        <form method="post">
+            {% csrf_token %}
+
+            <button type="submit">
+                🗑️ Да, удалить команду
+            </button>
+        </form>
+
+        <a
+            class="cancel"
+            href="{% url 'team_detail' team.id %}"
+        >
+            ← Отмена
+        </a>
+
+    </div>
+
+</div>
+
+</div>
+
+</body>
+</html>

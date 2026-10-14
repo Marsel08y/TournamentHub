@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>{{ team.name }} — TournamentHub</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f5f7fb;
+        color: #111827;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 0 20px 40px;
+    }
+
+    .card {
+        background: white;
+        border-radius: 18px;
+        padding: 28px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+        margin-bottom: 20px;
+    }
+
+    .team-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .team-info {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+    }
+
+    .team-icon {
+        width: 64px;
+        height: 64px;
+        border-radius: 16px;
+        background: #111827;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 30px;
+        flex-shrink: 0;
+    }
+
+    h1 {
+        margin: 0 0 8px;
+        font-size: 30px;
+    }
+
+    .captain {
+        margin: 0;
+        color: #6b7280;
+        font-size: 14px;
+    }
+
+    .captain strong {
+        color: #111827;
+    }
+
+    .role-banner {
+        margin-top: 22px;
+        padding: 13px 16px;
+        border-radius: 10px;
+        background: #f3f4f6;
+        color: #4b5563;
+        font-size: 14px;
+    }
+
+    .buttons {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 22px;
+    }
+
+    .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 11px 17px;
+        border-radius: 9px;
+        text-decoration: none;
+        border: none;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .invite {
+        background: #2563eb;
+        color: white;
+    }
+
+    .invite:hover {
+        background: #1d4ed8;
+    }
+
+    .edit {
+        background: #eef2ff;
+        color: #4338ca;
+    }
+
+    .edit:hover {
+        background: #e0e7ff;
+    }
+
+    .leave {
+        background: #fee2e2;
+        color: #dc2626;
+    }
+
+    .leave:hover {
+        background: #fecaca;
+    }
+
+    .back {
+        background: #e5e7eb;
+        color: #374151;
+    }
+
+    .back:hover {
+        background: #d1d5db;
+    }
+
+    .section-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 8px;
+    }
+
+    .section-title h2 {
+        margin: 0;
+        font-size: 22px;
+    }
+
+    .member-count {
+        background: #f3f4f6;
+        color: #6b7280;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: bold;
+    }
+
+    .description {
+        margin: 0 0 22px;
+        color: #6b7280;
+        font-size: 14px;
+    }
+
+    .member {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 16px;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        margin-bottom: 10px;
+        transition: 0.2s;
+    }
+
+    .member:last-child {
+        margin-bottom: 0;
+    }
+
+    .member:hover {
+        background: #fafafa;
+    }
+
+    .member-info {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        min-width: 0;
+    }
+
+    .avatar {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: #e5e7eb;
+        color: #374151;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 17px;
+        flex-shrink: 0;
+    }
+
+    .username {
+        font-weight: bold;
+        font-size: 15px;
+        word-break: break-word;
+    }
+
+    .role {
+        margin-top: 5px;
+        color: #7c3aed;
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .status {
+        margin-top: 5px;
+        font-size: 12px;
+    }
+
+    .accepted {
+        color: #16a34a;
+    }
+
+    .pending {
+        color: #d97706;
+    }
+
+    .rejected {
+        color: #dc2626;
+    }
+
+    .remove-button {
+        border: none;
+        background: #fee2e2;
+        color: #dc2626;
+        padding: 9px 13px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 13px;
+        flex-shrink: 0;
+    }
+
+    .remove-button:hover {
+        background: #fecaca;
+    }
+
+    .empty {
+        padding: 25px;
+        text-align: center;
+        background: #f9fafb;
+        border-radius: 12px;
+        color: #6b7280;
+    }
+
+    @media (max-width: 600px) {
+        .container {
+            margin-top: 20px;
+        }
+
+        .card {
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 24px;
+        }
+
+        .team-header {
+            align-items: flex-start;
+        }
+
+        .member {
+            align-items: flex-start;
+        }
+
+        .member-info {
+            width: 100%;
+        }
+
+        .remove-button {
+            margin-left: 57px;
+        }
+    }
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- Информация о команде -->
+<div class="card">
+
+    <div class="team-header">
+
+        <div class="team-info">
+
+            <div class="team-icon">
+                🛡️
+            </div>
+
+            <div>
+                <h1>{{ team.name }}</h1>
+
+                <p class="captain">
+                    Капитан:
+                    <strong>{{ team.captain.username }}</strong>
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    {% if is_captain %}
+
+        <div class="role-banner">
+            👑 Вы капитан этой команды. Вы можете приглашать игроков,
+            редактировать команду и управлять участниками.
+        </div>
+
+        <div class="buttons">
+
+            <a
+                href="{% url 'team_invite' team.id %}"
+                class="button invite"
+            >
+                ➕ Добавить участника
+            </a>
+
+            <a
+                href="{% url 'team_edit' team.id %}"
+                class="button edit"
+            >
+                ✏️ Изменить команду
+            </a>
+
+        </div>
+
+    {% else %}
+
+        <div class="role-banner">
+            👤 Вы участник этой команды.
+        </div>
+
+        <div class="buttons">
+
+            <form
+                method="post"
+                action="{% url 'leave_team' team.id %}"
+            >
+
+                {% csrf_token %}
+
+                <button
+                    type="submit"
+                    class="button leave"
+                    onclick="return confirm('Вы действительно хотите выйти из этой команды?');"
+                >
+                    🚪 Выйти из команды
+                </button>
+
+            </form>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+
+<!-- Участники -->
+<div class="card">
+
+    <div class="section-title">
+
+        <h2>👥 Участники команды</h2>
+
+        <span class="member-count">
+            {{ members|length }}
+        </span>
+
+    </div>
+
+    <p class="description">
+        Список игроков и их текущий статус в команде.
+    </p>
+
+
+    {% if members %}
+
+        {% for member in members %}
+
+            <div class="member">
+
+                <div class="member-info">
+
+                    <div class="avatar">
+                        {{ member.user.username|first|upper }}
+                    </div>
+
+                    <div>
+
+                        <div class="username">
+                            {{ member.user.username }}
+                        </div>
+
+
+                        {% if member.user == team.captain %}
+
+                            <div class="role">
+                                👑 Капитан
+                            </div>
+
+                        {% elif member.status == "accepted" %}
+
+                            <div class="status accepted">
+                                ✓ Участник команды
+                            </div>
+
+                        {% elif member.status == "pending" %}
+
+                            <div class="status pending">
+                                ⏳ Ожидает принятия приглашения
+                            </div>
+
+                        {% elif member.status == "rejected" %}
+
+                            <div class="status rejected">
+                                ✕ Приглашение отклонено
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                {% if is_captain and member.status == "accepted" and member.user != team.captain %}
+
+                    <form
+                        method="post"
+                        action="{% url 'remove_member' member.id %}"
+                    >
+
+                        {% csrf_token %}
+
+                        <button
+                            type="submit"
+                            class="remove-button"
+                            onclick="return confirm('Вы действительно хотите удалить этого игрока из команды?');"
+                        >
+                            🗑 Удалить
+                        </button>
+
+                    </form>
+
+                {% endif %}
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty">
+            В команде пока нет участников.
+        </div>
+
+    {% endif %}
+
+</div>
+
+
+<!-- Назад -->
+<div class="buttons">
+
+    <a
+        href="{% url 'team_list' %}"
+        class="button back"
+    >
+        ← Назад к командам
+    </a>
+
+</div>
+
+</div>
+
+</body>
+</html>

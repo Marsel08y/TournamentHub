@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Сетка — {{ tournament.name }}
+    </title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 40px;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+        }
+
+        h1 {
+            margin-top: 0;
+            color: #2563eb;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .organizer-info {
+            padding: 15px;
+            margin-bottom: 25px;
+            background: #dbeafe;
+            color: #1e40af;
+            border-radius: 8px;
+        }
+
+        .round {
+            margin-bottom: 40px;
+        }
+
+        .round-title {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .matches {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .match {
+            width: 340px;
+            background: #f1f3f7;
+            border-radius: 12px;
+            padding: 18px;
+        }
+
+        .match-number {
+            color: #777;
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .team {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        .winner {
+            border: 2px solid #22c55e;
+        }
+
+        .score {
+            float: right;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .pending {
+            margin-top: 12px;
+            color: #d97706;
+            font-size: 14px;
+        }
+
+        .finished {
+            margin-top: 12px;
+            color: #16a34a;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .result-button {
+            display: block;
+            margin-top: 15px;
+            padding: 14px 15px;
+            background: #2563eb;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .result-button:hover {
+            background: #1d4ed8;
+        }
+
+        .bye {
+            margin-top: 12px;
+            color: #7c3aed;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .empty {
+            padding: 20px;
+            background: #f1f3f7;
+            border-radius: 10px;
+            color: #666;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 25px;
+            color: #555;
+            text-decoration: none;
+        }
+
+        .back:hover {
+            color: #2563eb;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>
+        🏆 {{ tournament.name }}
+    </h1>
+
+    <div class="subtitle">
+        ⚔️ Сетка турнира
+    </div>
+
+
+    {% if is_organizer %}
+
+        <div class="organizer-info">
+
+            👑 Вы организатор этого турнира.
+
+            <br><br>
+
+            Вы можете вводить результаты матчей.
+
+        </div>
+
+    {% endif %}
+
+
+    {% if rounds %}
+
+        {% for round_number, matches in rounds.items %}
+
+            <div class="round">
+
+                <div class="round-title">
+
+                    {% if round_number == 1 %}
+
+                        1️⃣ Первый раунд
+
+                    {% elif round_number == 2 %}
+
+                        2️⃣ Второй раунд
+
+                    {% elif round_number == 3 %}
+
+                        3️⃣ Третий раунд
+
+                    {% elif round_number == 4 %}
+
+                        4️⃣ Четвёртый раунд
+
+                    {% else %}
+
+                        🏆 Раунд {{ round_number }}
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="matches">
+
+
+                    {% for match in matches %}
+
+                        <div class="match">
+
+                            <div class="match-number">
+
+                                Матч {{ match.match_number }}
+
+                            </div>
+
+
+                            <div
+                                class="
+                                    team
+                                    {% if match.winner == match.team1 %}
+                                        winner
+                                    {% endif %}
+                                "
+                            >
+
+                                {% if match.team1 %}
+
+                                    🛡️ {{ match.team1.name }}
+
+                                    {% if match.score1 is not None %}
+
+                                        <span class="score">
+                                            {{ match.score1 }}
+                                        </span>
+
+                                    {% endif %}
+
+                                {% else %}
+
+                                    Ожидается команда
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <div
+                                class="
+                                    team
+                                    {% if match.winner == match.team2 %}
+                                        winner
+                                    {% endif %}
+                                "
+                            >
+
+                                {% if match.team2 %}
+
+                                    🛡️ {{ match.team2.name }}
+
+                                    {% if match.score2 is not None %}
+
+                                        <span class="score">
+                                            {{ match.score2 }}
+                                        </span>
+
+                                    {% endif %}
+
+                                {% else %}
+
+                                    Ожидается команда
+
+                                {% endif %}
+
+                            </div>
+
+
+                            {% if not match.team2 and match.winner %}
+
+                                <div class="bye">
+
+                                    🟣 Автоматический проход
+                                    в следующий раунд
+
+                                </div>
+
+
+                            {% elif match.status == "finished" %}
+
+                                <div class="finished">
+
+                                    🟢 Матч завершён
+
+                                </div>
+
+
+                            {% else %}
+
+                                <div class="pending">
+
+                                    ⏳ Ожидается результат
+
+                                </div>
+
+
+                                <a
+                                    class="result-button"
+                                    href="{% url 'match_result' match.id %}"
+                                >
+
+                                    ✏️ Ввести результат
+
+                                </a>
+
+                            {% endif %}
+
+
+                        </div>
+
+                    {% endfor %}
+
+
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+
+    {% else %}
+
+        <div class="empty">
+
+            Сетка турнира ещё не создана.
+
+        </div>
+
+    {% endif %}
+
+
+    <a
+        class="back"
+        href="{% url 'tournament_detail' tournament.id %}"
+    >
+
+        ← Вернуться к турниру
+
+    </a>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>TournamentHub</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background:
+            radial-gradient(circle at top right, rgba(37, 99, 235, 0.08), transparent 35%),
+            #f5f7fb;
+        color: #1f2937;
+    }
+
+    /* =========================
+       БОКОВАЯ ПАНЕЛЬ
+    ========================= */
+
+    .sidebar {
+        position: fixed;
+        left: 20px;
+        top: 20px;
+        bottom: 20px;
+        width: 245px;
+
+        background: rgba(255, 255, 255, 0.96);
+        border: 1px solid #e5e7eb;
+        border-radius: 22px;
+
+        padding: 24px 15px;
+
+        box-shadow: 0 12px 35px rgba(15, 23, 42, 0.08);
+
+        display: flex;
+        flex-direction: column;
+
+        z-index: 100;
+    }
+
+    .logo {
+        font-size: 23px;
+        font-weight: bold;
+
+        padding: 8px 15px 28px;
+
+        color: #2563eb;
+    }
+
+    .logo span {
+        color: #111827;
+    }
+
+    .menu {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+    }
+
+    .menu a {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+
+        padding: 13px 15px;
+
+        border-radius: 13px;
+
+        text-decoration: none;
+
+        color: #4b5563;
+
+        font-size: 15px;
+        font-weight: 500;
+
+        transition: 0.2s;
+    }
+
+    .menu a:hover {
+        background: #eef4ff;
+        color: #2563eb;
+        transform: translateX(2px);
+    }
+
+    .menu a.active {
+        background: #2563eb;
+        color: white;
+        box-shadow: 0 7px 18px rgba(37, 99, 235, 0.25);
+    }
+
+    .icon {
+        width: 22px;
+        text-align: center;
+        font-size: 18px;
+    }
+
+    .bottom-menu {
+        margin-top: auto;
+
+        border-top: 1px solid #e5e7eb;
+
+        padding-top: 15px;
+    }
+
+    .logout {
+        color: #dc2626 !important;
+    }
+
+    .logout:hover {
+        background: #fff1f2 !important;
+        color: #dc2626 !important;
+        transform: none !important;
+    }
+
+    /* =========================
+       ОСНОВНАЯ ЧАСТЬ
+    ========================= */
+
+    .main {
+        margin-left: 295px;
+
+        min-height: 100vh;
+
+        padding: 55px 50px 70px;
+    }
+
+    .content {
+        max-width: 950px;
+    }
+
+    /* =========================
+       ПРИВЕТСТВИЕ
+    ========================= */
+
+    .welcome {
+        position: relative;
+        overflow: hidden;
+
+        background: linear-gradient(
+            135deg,
+            #ffffff 0%,
+            #f7faff 100%
+        );
+
+        border: 1px solid #e5e7eb;
+        border-radius: 24px;
+
+        padding: 38px 40px;
+
+        box-shadow: 0 12px 35px rgba(15, 23, 42, 0.06);
+    }
+
+    .welcome::after {
+        content: "🏆";
+
+        position: absolute;
+        right: 35px;
+        top: 25px;
+
+        font-size: 80px;
+        opacity: 0.08;
+    }
+
+    .welcome h1 {
+        position: relative;
+        z-index: 1;
+
+        margin: 0 0 12px;
+
+        font-size: 36px;
+        line-height: 1.2;
+
+        color: #111827;
+    }
+
+    .welcome h1 span {
+        color: #2563eb;
+    }
+
+    .welcome p {
+        position: relative;
+        z-index: 1;
+
+        margin: 0;
+
+        max-width: 680px;
+
+        font-size: 16px;
+
+        color: #6b7280;
+
+        line-height: 1.7;
+    }
+
+    /* =========================
+       КАРТОЧКИ
+    ========================= */
+
+    .info-card {
+        margin-top: 25px;
+
+        background: #ffffff;
+
+        border: 1px solid #e5e7eb;
+        border-radius: 20px;
+
+        padding: 27px;
+
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+    }
+
+    .info-card h2 {
+        margin: 0 0 18px;
+
+        font-size: 21px;
+
+        color: #111827;
+    }
+
+    .info-card p {
+        color: #6b7280;
+        line-height: 1.7;
+    }
+
+    /* =========================
+       ЗАЯВКИ
+    ========================= */
+
+    .registration-card {
+        display: block;
+
+        background: #f8fafc;
+
+        border: 1px solid #e5e7eb;
+
+        border-radius: 15px;
+
+        padding: 18px;
+
+        margin-top: 12px;
+
+        text-decoration: none;
+
+        color: #1f2937;
+
+        transition: 0.2s;
+    }
+
+    .registration-card:hover {
+        border-color: #93b4ff;
+
+        background: #f5f8ff;
+
+        transform: translateY(-2px);
+
+        box-shadow: 0 7px 18px rgba(37, 99, 235, 0.08);
+    }
+
+    .registration-title {
+        font-size: 18px;
+
+        font-weight: bold;
+
+        color: #2563eb;
+
+        margin-bottom: 10px;
+    }
+
+    .registration-info {
+        color: #6b7280;
+
+        margin-top: 7px;
+
+        font-size: 14px;
+    }
+
+    .registration-info strong {
+        color: #374151;
+    }
+
+    /* =========================
+       СТАТУСЫ
+    ========================= */
+
+    .status {
+        display: inline-block;
+
+        margin-top: 12px;
+
+        padding: 7px 11px;
+
+        border-radius: 8px;
+
+        font-size: 13px;
+        font-weight: 600;
+
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .status.accepted {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .status.rejected {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+
+    /* =========================
+       ПУСТЫЕ БЛОКИ
+    ========================= */
+
+    .empty {
+        padding: 17px;
+
+        background: #f8fafc;
+
+        border: 1px dashed #d1d5db;
+
+        border-radius: 12px;
+
+        color: #6b7280;
+
+        text-align: center;
+    }
+
+    /* =========================
+       МОБИЛЬНАЯ ВЕРСИЯ
+    ========================= */
+
+    @media (max-width: 800px) {
+
+        .sidebar {
+            position: relative;
+
+            left: auto;
+            top: auto;
+            bottom: auto;
+
+            width: calc(100% - 30px);
+
+            margin: 15px;
+
+            padding: 15px;
+
+            border-radius: 18px;
+        }
+
+        .logo {
+            padding-bottom: 15px;
+        }
+
+        .menu {
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+
+        .menu a {
+            flex: 1 1 45%;
+        }
+
+        .bottom-menu {
+            margin-top: 10px;
+        }
+
+        .main {
+            margin-left: 0;
+
+            padding: 20px 15px 40px;
+        }
+
+        .welcome {
+            padding: 28px 24px;
+        }
+
+        .welcome h1 {
+            font-size: 29px;
+        }
+
+        .welcome::after {
+            display: none;
+        }
+
+        .info-card {
+            padding: 22px;
+        }
+    }
+
+    @media (max-width: 500px) {
+
+        .menu a {
+            flex: 1 1 100%;
+        }
+
+        .welcome h1 {
+            font-size: 25px;
+        }
+    }
+</style>
+
+</head>
+
+<body>
+
+<!-- Боковая панель -->
+
+<aside class="sidebar">
+
+    <div class="logo">
+        🏆 <span>Tournament</span>Hub
+    </div>
+
+    <nav class="menu">
+
+        <a href="{% url 'home' %}" class="active">
+            <span class="icon">🏠</span>
+            Главная
+        </a>
+
+        <a href="{% url 'tournament_list' %}">
+            <span class="icon">🏆</span>
+            Турниры
+        </a>
+
+        <a href="{% url 'team_list' %}">
+            <span class="icon">👥</span>
+            Команды
+        </a>
+
+        <a href="{% url 'my_invitations' %}">
+            <span class="icon">🔔</span>
+            Приглашения
+        </a>
+
+        <a href="{% url 'profile' %}">
+            <span class="icon">👤</span>
+            Профиль
+        </a>
+
+    </nav>
+
+    <div class="bottom-menu">
+
+        <a href="{% url 'logout' %}" class="menu a logout">
+            <span class="icon">🚪</span>
+            Выйти
+        </a>
+
+    </div>
+
+</aside>
+
+
+<!-- Основная часть -->
+
+<main class="main">
+
+    <div class="content">
+
+        <!-- Приветствие -->
+
+        <section class="welcome">
+
+            <h1>
+                Добро пожаловать в
+                <span>TournamentHub</span>!
+            </h1>
+
+            <p>
+                Платформа для создания команд,
+                участия в турнирах и проведения
+                соревнований.
+            </p>
+
+        </section>
+
+
+        <!-- Мои заявки -->
+
+        <div class="info-card">
+
+            <h2>🏆 Мои заявки на турниры</h2>
+
+            {% if my_registrations %}
+
+                {% for registration in my_registrations %}
+
+                    <a
+                        class="registration-card"
+                        href="{% url 'tournament_detail' registration.tournament.id %}"
+                    >
+
+                        <div class="registration-title">
+                            {{ registration.tournament.name }}
+                        </div>
+
+                        <div class="registration-info">
+                            🛡 Команда:
+                            <strong>{{ registration.team.name }}</strong>
+                        </div>
+
+                        <div class="registration-info">
+                            🎮 Игра:
+                            {{ registration.tournament.game }}
+                        </div>
+
+                        {% if registration.status == "pending" %}
+
+                            <span class="status">
+                                ⏳ Заявка на рассмотрении
+                            </span>
+
+                        {% elif registration.status == "accepted" %}
+
+                            <span class="status accepted">
+                                🟢 Заявка принята
+                            </span>
+
+                        {% elif registration.status == "rejected" %}
+
+                            <span class="status rejected">
+                                🔴 Заявка отклонена
+                            </span>
+
+                        {% endif %}
+
+                    </a>
+
+                {% endfor %}
+
+            {% else %}
+
+                <div class="empty">
+                    У вас пока нет заявок на турниры.
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- Последние зарегистрированные команды -->
+
+        <div class="info-card">
+
+            <h2>👥 Последние зарегистрированные команды</h2>
+
+            {% if recent_registrations %}
+
+                {% for registration in recent_registrations %}
+
+                    <a
+                        class="registration-card"
+                        href="{% url 'tournament_detail' registration.tournament.id %}"
+                    >
+
+                        <div class="registration-title">
+                            {{ registration.tournament.name }}
+                        </div>
+
+                        <div class="registration-info">
+                            🛡 Команда:
+                            <strong>{{ registration.team.name }}</strong>
+                        </div>
+
+                        <div class="registration-info">
+                            👑 Капитан:
+                            {{ registration.team.captain.username }}
+                        </div>
+
+                        <span class="status accepted">
+                            🟢 Участвует в турнире
+                        </span>
+
+                    </a>
+
+                {% endfor %}
+
+            {% else %}
+
+                <div class="empty">
+                    Пока нет принятых заявок.
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- Информация -->
+
+        <div class="info-card">
+
+            <h2>Начнём? 🚀</h2>
+
+            <p>
+                Используйте меню слева, чтобы перейти
+                к командам, турнирам или посмотреть
+                свои приглашения.
+            </p>
+
+        </div>
+
+    </div>
+
+</main>
+
+</body>
+
+</html>

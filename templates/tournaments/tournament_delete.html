@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Удаление турнира — TournamentHub</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f5f7fb;
+        color: #111827;
+    }
+
+    .page {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 30px 20px;
+    }
+
+    .card {
+        width: 100%;
+        max-width: 620px;
+        background: white;
+        border-radius: 18px;
+        padding: 32px;
+        text-align: center;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+    }
+
+    .icon {
+        width: 68px;
+        height: 68px;
+        margin: 0 auto 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: #fee2e2;
+        font-size: 30px;
+    }
+
+    h1 {
+        margin: 0 0 10px;
+        color: #b91c1c;
+        font-size: 28px;
+    }
+
+    .subtitle {
+        margin: 0;
+        color: #6b7280;
+        font-size: 14px;
+    }
+
+    .warning {
+        margin-top: 24px;
+        padding: 20px;
+        background: #fff7f7;
+        border: 1px solid #fecaca;
+        border-radius: 12px;
+        color: #7f1d1d;
+    }
+
+    .tournament-name {
+        display: block;
+        margin-bottom: 12px;
+        font-size: 18px;
+        line-height: 1.4;
+    }
+
+    .warning p {
+        margin: 8px 0 0;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .danger-text {
+        margin-top: 14px !important;
+        font-weight: bold;
+    }
+
+    .buttons {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 26px;
+    }
+
+    .delete-button,
+    .cancel {
+        min-height: 44px;
+        padding: 11px 18px;
+        border-radius: 9px;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .delete-button {
+        border: none;
+        background: #dc2626;
+        color: white;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .delete-button:hover {
+        background: #b91c1c;
+    }
+
+    .cancel {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: #e5e7eb;
+        color: #374151;
+        text-decoration: none;
+        transition: background 0.2s;
+    }
+
+    .cancel:hover {
+        background: #d1d5db;
+    }
+
+    @media (max-width: 600px) {
+        .page {
+            padding: 20px 12px;
+        }
+
+        .card {
+            padding: 24px 20px;
+        }
+
+        h1 {
+            font-size: 24px;
+        }
+
+        .buttons {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .delete-button,
+        .cancel {
+            width: 100%;
+        }
+    }
+</style>
+
+</head>
+
+<body>
+
+<div class="page">
+
+<div class="card">
+
+    <div class="icon">
+        🗑️
+    </div>
+
+    <h1>Удаление турнира</h1>
+
+    <p class="subtitle">
+        Вы собираетесь удалить следующий турнир:
+    </p>
+
+
+    <div class="warning">
+
+        <strong class="tournament-name">
+            «{{ tournament.name }}»
+        </strong>
+
+        <p>
+            Все заявки команд на этот турнир также будут удалены.
+        </p>
+
+        <p class="danger-text">
+            ⚠️ Это действие нельзя отменить.
+        </p>
+
+    </div>
+
+
+    <div class="buttons">
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            <button
+                type="submit"
+                class="delete-button"
+            >
+                🗑️ Да, удалить турнир
+            </button>
+
+        </form>
+
+
+        <a
+            href="{% url 'tournament_detail' tournament.id %}"
+            class="cancel"
+        >
+            Отмена
+        </a>
+
+    </div>
+
+</div>
+
+</div>
+
+</body>
+</html>

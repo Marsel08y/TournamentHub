@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Мои приглашения</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f4f6fb;
+        color: #1f2937;
+    }
+
+    .page {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 50px 25px;
+    }
+
+    .header {
+        margin-bottom: 30px;
+    }
+
+    .header h1 {
+        margin: 0 0 10px;
+        font-size: 34px;
+    }
+
+    .header p {
+        margin: 0;
+        color: #6b7280;
+    }
+
+    .invitation {
+        background: white;
+        border-radius: 18px;
+        padding: 25px;
+        margin-bottom: 18px;
+
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+
+        transition: 0.2s;
+    }
+
+    .invitation:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.09);
+    }
+
+    .team-info {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        margin-bottom: 22px;
+    }
+
+    .team-icon {
+        width: 55px;
+        height: 55px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: #eff6ff;
+        border-radius: 14px;
+
+        font-size: 27px;
+    }
+
+    .team-name {
+        font-size: 21px;
+        font-weight: bold;
+        margin-bottom: 6px;
+    }
+
+    .captain {
+        color: #6b7280;
+        font-size: 14px;
+    }
+
+    .buttons {
+        display: flex;
+        gap: 12px;
+    }
+
+    .buttons form {
+        margin: 0;
+    }
+
+    button {
+        border: none;
+        padding: 11px 20px;
+
+        border-radius: 10px;
+
+        color: white;
+
+        font-size: 14px;
+
+        cursor: pointer;
+
+        transition: 0.2s;
+    }
+
+    .accept {
+        background: #16a34a;
+    }
+
+    .accept:hover {
+        background: #15803d;
+    }
+
+    .reject {
+        background: #ef4444;
+    }
+
+    .reject:hover {
+        background: #dc2626;
+    }
+
+    .empty {
+        background: white;
+
+        border-radius: 18px;
+
+        padding: 50px 25px;
+
+        text-align: center;
+
+        color: #6b7280;
+
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+    }
+
+    .empty-icon {
+        font-size: 45px;
+        margin-bottom: 15px;
+    }
+
+    .back {
+        display: inline-block;
+
+        margin-top: 30px;
+
+        color: #2563eb;
+
+        text-decoration: none;
+
+        font-size: 15px;
+    }
+
+    .back:hover {
+        text-decoration: underline;
+    }
+
+    @media (max-width: 600px) {
+
+        .page {
+            padding: 30px 15px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+        }
+
+        .team-info {
+            align-items: flex-start;
+        }
+
+        .buttons {
+            flex-direction: column;
+        }
+
+        button {
+            width: 100%;
+        }
+    }
+</style>
+
+</head>
+
+<body>
+
+<div class="page">
+
+<div class="header">
+
+    <h1>🔔 Мои приглашения</h1>
+
+    <p>
+        Здесь отображаются приглашения в команды.
+    </p>
+
+</div>
+
+
+{% for invitation in invitations %}
+
+    <div class="invitation">
+
+        <div class="team-info">
+
+            <div class="team-icon">
+                👥
+            </div>
+
+            <div>
+
+                <div class="team-name">
+                    {{ invitation.team.name }}
+                </div>
+
+                <div class="captain">
+                    Капитан:
+                    {{ invitation.team.captain.username }}
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="buttons">
+
+            <form
+                method="post"
+                action="{% url 'accept_invitation' invitation.id %}"
+            >
+
+                {% csrf_token %}
+
+                <button
+                    type="submit"
+                    class="accept"
+                >
+                    ✓ Принять приглашение
+                </button>
+
+            </form>
+
+
+            <form
+                method="post"
+                action="{% url 'reject_invitation' invitation.id %}"
+            >
+
+                {% csrf_token %}
+
+                <button
+                    type="submit"
+                    class="reject"
+                >
+                    ✕ Отклонить
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+{% empty %}
+
+    <div class="empty">
+
+        <div class="empty-icon">
+            📭
+        </div>
+
+        <h2>
+            Приглашений пока нет
+        </h2>
+
+        <p>
+            Когда капитан пригласит вас в команду,
+            приглашение появится здесь.
+        </p>
+
+    </div>
+
+{% endfor %}
+
+
+<a
+    class="back"
+    href="{% url 'home' %}"
+>
+    ← Вернуться на главную
+</a>
+
+</div>
+
+</body>
+
+</html>

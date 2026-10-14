@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Турниры — TournamentHub</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background:
+                radial-gradient(circle at top right, rgba(37, 99, 235, 0.08), transparent 35%),
+                #f5f7fb;
+            color: #1f2937;
+        }
+
+        .container {
+            max-width: 1050px;
+            margin: 0 auto;
+            padding: 45px 25px 60px;
+        }
+
+        .header-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 22px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 32px;
+            color: #111827;
+        }
+
+        .subtitle {
+            margin: 10px 0 0;
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        .create {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 18px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 11px;
+            font-weight: 600;
+            white-space: nowrap;
+            box-shadow: 0 6px 15px rgba(37, 99, 235, 0.22);
+            transition: 0.2s;
+        }
+
+        .create:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        .tournament {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            padding: 25px;
+            margin-bottom: 18px;
+            box-shadow: 0 8px 25px rgba(15, 23, 42, 0.05);
+            transition: 0.2s;
+        }
+
+        .tournament:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+        }
+
+        .tournament h2 {
+            margin: 0 0 18px;
+            color: #2563eb;
+            font-size: 22px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .info {
+            padding: 11px 13px;
+            background: #f8fafc;
+            border-radius: 10px;
+            color: #6b7280;
+            font-size: 14px;
+            border: 1px solid #f0f2f5;
+        }
+
+        .info strong {
+            color: #374151;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 10px;
+            margin-left: 5px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+            margin-top: 20px;
+            padding-top: 18px;
+            border-top: 1px solid #eef0f3;
+        }
+
+        .buttons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 15px;
+            border-radius: 9px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .open {
+            background: #2563eb;
+            color: white;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.18);
+        }
+
+        .open:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        .edit {
+            background: #fff7ed;
+            color: #c2410c;
+            border: 1px solid #fed7aa;
+        }
+
+        .edit:hover {
+            background: #ffedd5;
+        }
+
+        .delete {
+            background: #fff1f2;
+            color: #dc2626;
+            border: 1px solid #fecdd3;
+        }
+
+        .delete:hover {
+            background: #ffe4e6;
+        }
+
+        .empty {
+            background: white;
+            border: 1px dashed #cbd5e1;
+            border-radius: 18px;
+            padding: 35px;
+            text-align: center;
+            color: #6b7280;
+            box-shadow: 0 8px 25px rgba(15, 23, 42, 0.04);
+        }
+
+        .back {
+            display: inline-flex;
+            margin-top: 8px;
+            padding: 11px 15px;
+            text-decoration: none;
+            color: #4b5563;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .back:hover {
+            color: #2563eb;
+            border-color: #bfdbfe;
+            background: #f8fbff;
+        }
+
+        @media (max-width: 700px) {
+            .container {
+                padding: 25px 15px 40px;
+            }
+
+            .header-card {
+                padding: 23px;
+            }
+
+            .header-top {
+                flex-direction: column;
+            }
+
+            .create {
+                width: 100%;
+            }
+
+            h1 {
+                font-size: 27px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tournament {
+                padding: 20px;
+            }
+
+            .buttons a {
+                flex: 1 1 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <!-- Заголовок -->
+    <div class="header-card">
+        <div class="header-top">
+            <div>
+                <h1>🏆 Турниры</h1>
+                <p class="subtitle">
+                    Создавайте турниры, подавайте заявки
+                    и участвуйте в соревнованиях.
+                </p>
+            </div>
+
+            {% if request.user.is_authenticated %}
+                <a class="create" href="{% url 'tournament_create' %}">
+                    ➕ Создать турнир
+                </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Список турниров -->
+    {% for tournament in tournaments %}
+        <div class="tournament">
+            <h2>🏆 {{ tournament.name }}</h2>
+
+            <div class="info-grid">
+                <div class="info">
+                    🎮 Игра:
+                    <strong>{{ tournament.game }}</strong>
+                </div>
+
+                <div class="info">
+                    👥 Размер команды:
+                    <strong>{{ tournament.get_team_size_display }}</strong>
+                </div>
+
+                <div class="info">
+                    🏆 Максимум команд:
+                    <strong>{{ tournament.max_teams }}</strong>
+                </div>
+
+                <div class="info">
+                    📅 Дата:
+                    <strong>{{ tournament.tournament_date|date:"d.m.Y H:i" }}</strong>
+                </div>
+
+                <div class="info">
+                    ⏰ Регистрация до:
+                    <strong>{{ tournament.registration_deadline|date:"d.m.Y H:i" }}</strong>
+                </div>
+
+                <div class="info">
+                    📌 Статус:
+
+                    {% if tournament.status == "registration" %}
+                        <span class="status">
+                            {{ tournament.get_status_display }}
+                        </span>
+                    {% elif tournament.status == "started" %}
+                        <span class="status" style="background:#dbeafe; color:#1e40af;">
+                            {{ tournament.get_status_display }}
+                        </span>
+                    {% elif tournament.status == "finished" %}
+                        <span class="status" style="background:#dcfce7; color:#166534;">
+                            {{ tournament.get_status_display }}
+                        </span>
+                    {% else %}
+                        <span class="status">
+                            {{ tournament.get_status_display }}
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Кнопки -->
+            <div class="buttons">
+                <a class="open" href="{% url 'tournament_detail' tournament.id %}">
+                    Открыть
+                </a>
+
+                {% if tournament.organizer == request.user %}
+                    <a class="edit" href="{% url 'tournament_edit' tournament.id %}">
+                        ✏️ Изменить
+                    </a>
+
+                    <a class="delete" href="{% url 'tournament_delete' tournament.id %}">
+                        🗑 Удалить
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+
+    {% empty %}
+        <div class="empty">
+            🏆 Пока нет созданных турниров.
+        </div>
+    {% endfor %}
+
+    <!-- Назад -->
+    <a class="back" href="{% url 'home' %}">
+        ← На главную
+    </a>
+
+</div>
+</body>
+</html>

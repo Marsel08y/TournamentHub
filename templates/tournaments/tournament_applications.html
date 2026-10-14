@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+<title>Заявки — {{ tournament.name }}</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f5f7fb;
+        color: #111827;
+    }
+
+    .page {
+        max-width: 950px;
+        margin: 40px auto;
+        padding: 0 20px 40px;
+    }
+
+    .header-card {
+        background: white;
+        border-radius: 18px;
+        padding: 28px;
+        margin-bottom: 20px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+    }
+
+    .header-card h1 {
+        margin: 0 0 8px;
+        font-size: 30px;
+    }
+
+    .subtitle {
+        margin: 0;
+        color: #6b7280;
+        font-size: 14px;
+    }
+
+    .subtitle strong {
+        color: #111827;
+    }
+
+    .message {
+        margin-bottom: 16px;
+        padding: 13px 16px;
+        border-radius: 10px;
+        background: #dcfce7;
+        border: 1px solid #bbf7d0;
+        color: #166534;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .application {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        margin-bottom: 16px;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .application-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        margin-bottom: 18px;
+    }
+
+    .team-name {
+        font-size: 21px;
+        font-weight: bold;
+        color: #2563eb;
+    }
+
+    .info {
+        margin: 0;
+        color: #4b5563;
+        font-size: 14px;
+    }
+
+    .members {
+        margin-top: 18px;
+        padding: 17px;
+        background: #f9fafb;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+    }
+
+    .members h3 {
+        margin: 0 0 12px;
+        font-size: 16px;
+        color: #374151;
+    }
+
+    .member {
+        padding: 9px 0;
+        border-bottom: 1px solid #e5e7eb;
+        color: #4b5563;
+        font-size: 14px;
+    }
+
+    .member:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+
+    .status {
+        display: inline-block;
+        margin-top: 18px;
+        padding: 7px 11px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: bold;
+    }
+
+    .pending {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .accepted {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .rejected {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+
+    .buttons {
+        display: flex;
+        gap: 9px;
+        flex-wrap: wrap;
+        margin-top: 16px;
+    }
+
+    .buttons form {
+        margin: 0;
+    }
+
+    button {
+        border: none;
+        min-height: 40px;
+        padding: 10px 14px;
+        border-radius: 8px;
+        color: white;
+        font-size: 13px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .accept {
+        background: #16a34a;
+    }
+
+    .accept:hover {
+        background: #15803d;
+    }
+
+    .reject {
+        background: #dc2626;
+    }
+
+    .reject:hover {
+        background: #b91c1c;
+    }
+
+    .remove {
+        background: #6b7280;
+    }
+
+    .remove:hover {
+        background: #4b5563;
+    }
+
+    .empty {
+        padding: 28px;
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        color: #6b7280;
+        text-align: center;
+    }
+
+    .back {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 4px;
+        padding: 11px 17px;
+        border-radius: 9px;
+        background: #e5e7eb;
+        color: #374151;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .back:hover {
+        background: #d1d5db;
+    }
+
+    @media (max-width: 600px) {
+        .page {
+            margin-top: 20px;
+            padding: 0 12px 30px;
+        }
+
+        .header-card {
+            padding: 22px;
+        }
+
+        .header-card h1 {
+            font-size: 24px;
+        }
+
+        .application {
+            padding: 20px;
+        }
+
+        .team-name {
+            font-size: 19px;
+        }
+
+        .buttons {
+            flex-direction: column;
+        }
+
+        .buttons form,
+        .buttons button {
+            width: 100%;
+        }
+
+        .back {
+            width: 100%;
+        }
+    }
+</style>
+
+</head>
+
+<body>
+
+<div class="page">
+
+<div class="header-card">
+
+    <h1>🏆 Заявки на турнир</h1>
+
+    <p class="subtitle">
+        Турнир:
+        <strong>{{ tournament.name }}</strong>
+    </p>
+
+</div>
+
+
+{% if messages %}
+
+    {% for message in messages %}
+
+        <div class="message">
+            {{ message }}
+        </div>
+
+    {% endfor %}
+
+{% endif %}
+
+
+{% for registration in registrations %}
+
+    <div class="application">
+
+        <div class="application-header">
+
+            <div class="team-name">
+                🛡️ {{ registration.team.name }}
+            </div>
+
+        </div>
+
+
+        <div class="info">
+
+            👑 <strong>Капитан:</strong>
+            {{ registration.team.captain.username }}
+
+        </div>
+
+
+        <div class="members">
+
+            <h3>👥 Участники команды</h3>
+
+
+            <div class="member">
+
+                👑 {{ registration.team.captain.username }}
+                — капитан
+
+            </div>
+
+
+            {% for member in registration.team.members.all %}
+
+                {% if member.status == "accepted" %}
+
+                    <div class="member">
+
+                        👤 {{ member.user.username }}
+
+                    </div>
+
+                {% endif %}
+
+            {% endfor %}
+
+        </div>
+
+
+        {% if registration.status == "pending" %}
+
+            <div class="status pending">
+                ⏳ На рассмотрении
+            </div>
+
+
+            <div class="buttons">
+
+                <form
+                    method="post"
+                    action="{% url 'accept_tournament_registration' registration.id %}"
+                >
+
+                    {% csrf_token %}
+
+                    <button
+                        type="submit"
+                        class="accept"
+                    >
+                        🟢 Принять
+                    </button>
+
+                </form>
+
+
+                <form
+                    method="post"
+                    action="{% url 'reject_tournament_registration' registration.id %}"
+                >
+
+                    {% csrf_token %}
+
+                    <button
+                        type="submit"
+                        class="reject"
+                        onclick="return confirm('Вы действительно хотите отклонить заявку?');"
+                    >
+                        🔴 Отклонить
+                    </button>
+
+                </form>
+
+
+                <form
+                    method="post"
+                    action="{% url 'remove_team_from_tournament' registration.id %}"
+                >
+
+                    {% csrf_token %}
+
+                    <button
+                        type="submit"
+                        class="remove"
+                        onclick="return confirm('Убрать эту команду из турнира? Сама команда удалена не будет.');"
+                    >
+                        🗑️ Убрать из турнира
+                    </button>
+
+                </form>
+
+            </div>
+
+
+        {% elif registration.status == "accepted" %}
+
+            <div class="status accepted">
+                🟢 Заявка принята
+            </div>
+
+
+            <div class="buttons">
+
+                <form
+                    method="post"
+                    action="{% url 'remove_team_from_tournament' registration.id %}"
+                >
+
+                    {% csrf_token %}
+
+                    <button
+                        type="submit"
+                        class="remove"
+                        onclick="return confirm('Убрать эту команду из турнира? Сама команда удалена не будет.');"
+                    >
+                        🗑️ Убрать из турнира
+                    </button>
+
+                </form>
+
+            </div>
+
+
+        {% elif registration.status == "rejected" %}
+
+            <div class="status rejected">
+                🔴 Заявка отклонена
+            </div>
+
+
+            <div class="buttons">
+
+                <form
+                    method="post"
+                    action="{% url 'remove_team_from_tournament' registration.id %}"
+                >
+
+                    {% csrf_token %}
+
+                    <button
+                        type="submit"
+                        class="remove"
+                        onclick="return confirm('Удалить эту заявку из турнира?');"
+                    >
+                        🗑️ Удалить заявку
+                    </button>
+
+                </form>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+{% empty %}
+
+    <div class="empty">
+        Пока никто не подал заявку на этот турнир.
+    </div>
+
+{% endfor %}
+
+
+<a
+    class="back"
+    href="{% url 'tournament_detail' tournament.id %}"
+>
+    ← Вернуться к турниру
+</a>
+
+</div>
+
+</body>
+</html>

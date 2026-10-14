@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Результат матча
+    </title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 40px;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+        }
+
+        h1 {
+            margin-top: 0;
+            color: #2563eb;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .match-info {
+            padding: 20px;
+            background: #f1f3f7;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        .team {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        .vs {
+            text-align: center;
+            color: #777;
+            font-size: 14px;
+        }
+
+        .field {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .errors {
+            padding: 12px;
+            margin-bottom: 20px;
+            background: #fee2e2;
+            color: #991b1b;
+            border-radius: 8px;
+        }
+
+        .field-error {
+            margin-top: 8px;
+            color: #dc2626;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: #16a34a;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #15803d;
+        }
+
+        .back {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+            color: #555;
+            text-decoration: none;
+        }
+
+        .back:hover {
+            color: #2563eb;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>
+        ⚔️ Результат матча
+    </h1>
+
+    <div class="subtitle">
+        Введите результат сыгранного матча
+    </div>
+
+
+    <div class="match-info">
+
+        <div class="team">
+
+            🛡️ {{ match.team1.name }}
+
+        </div>
+
+
+        <div class="vs">
+            VS
+        </div>
+
+
+        <div class="team">
+
+            🛡️ {{ match.team2.name }}
+
+        </div>
+
+    </div>
+
+
+    {% if form.non_field_errors %}
+
+        <div class="errors">
+
+            {{ form.non_field_errors }}
+
+        </div>
+
+    {% endif %}
+
+
+    <form method="post">
+
+        {% csrf_token %}
+
+
+        <div class="field">
+
+            <label>
+                {{ form.score1.label }}
+            </label>
+
+            {{ form.score1 }}
+
+            {% if form.score1.errors %}
+
+                <div class="field-error">
+
+                    {{ form.score1.errors }}
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <div class="field">
+
+            <label>
+                {{ form.score2.label }}
+            </label>
+
+            {{ form.score2 }}
+
+            {% if form.score2.errors %}
+
+                <div class="field-error">
+
+                    {{ form.score2.errors }}
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <button type="submit">
+
+            🏆 Завершить матч
+
+        </button>
+
+    </form>
+
+
+    <a
+        class="back"
+        href="{% url 'tournament_bracket' tournament.id %}"
+    >
+
+        ← Вернуться к сетке
+
+    </a>
+
+</div>
+
+</body>
+
+</html>

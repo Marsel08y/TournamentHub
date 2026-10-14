@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Вход — TournamentHub</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-family: Arial, sans-serif;
+
+            background: #0f172a;
+            color: white;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 430px;
+
+            padding: 35px;
+
+            background: #111827;
+
+            border: 1px solid #263244;
+            border-radius: 15px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 0;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #94a3b8;
+            margin-bottom: 30px;
+        }
+
+        form p {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+
+        label {
+            color: #cbd5e1;
+        }
+
+        input {
+            padding: 12px;
+
+            background: #1e293b;
+
+            border: 1px solid #334155;
+            border-radius: 7px;
+
+            color: white;
+
+            font-size: 15px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #38bdf8;
+        }
+
+        .errorlist {
+            color: #f87171;
+            font-size: 13px;
+        }
+
+        button {
+            width: 100%;
+
+            padding: 13px;
+
+            border: none;
+            border-radius: 8px;
+
+            background: #38bdf8;
+            color: #0f172a;
+
+            font-size: 16px;
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0ea5e9;
+        }
+
+        .back {
+            display: block;
+
+            margin-top: 20px;
+
+            text-align: center;
+
+            color: #94a3b8;
+
+            text-decoration: none;
+        }
+
+        .back:hover {
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Вход</h1>
+
+    <div class="subtitle">
+        Войдите в свой аккаунт TournamentHub
+    </div>
+
+    <form method="post">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit">
+            Войти
+        </button>
+
+    </form>
+
+    <a class="back" href="{% url 'register' %}">
+        Нет аккаунта? Зарегистрироваться
+    </a>
+
+</div>
+
+</body>
+</html>

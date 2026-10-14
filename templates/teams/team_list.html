@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Мои команды — TournamentHub</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f4f6fb;
+        color: #1f2937;
+    }
+
+    .page {
+        max-width: 950px;
+        margin: 0 auto;
+        padding: 40px 20px;
+    }
+
+    .header-card {
+        background: white;
+        border-radius: 20px;
+        padding: 30px;
+        margin-bottom: 22px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.07);
+    }
+
+    .header-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+    }
+
+    h1 {
+        margin: 0 0 8px;
+        font-size: 30px;
+        color: #111827;
+    }
+
+    .subtitle {
+        margin: 0;
+        color: #6b7280;
+        font-size: 15px;
+    }
+
+    .create {
+        display: inline-block;
+        padding: 12px 18px;
+        background: #2563eb;
+        color: white;
+        text-decoration: none;
+        border-radius: 10px;
+        font-weight: bold;
+        white-space: nowrap;
+    }
+
+    .create:hover {
+        background: #1d4ed8;
+    }
+
+    .team {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 18px;
+        padding: 24px;
+        margin-bottom: 16px;
+        box-shadow: 0 6px 22px rgba(0, 0, 0, 0.05);
+    }
+
+    .team-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .team-name {
+        font-size: 21px;
+        font-weight: bold;
+        color: #2563eb;
+        text-decoration: none;
+    }
+
+    .team-name:hover {
+        text-decoration: underline;
+    }
+
+    .role {
+        display: inline-block;
+        padding: 6px 10px;
+        border-radius: 8px;
+        background: #eef2ff;
+        color: #4338ca;
+        font-size: 13px;
+        font-weight: bold;
+    }
+
+    .buttons {
+        display: flex;
+        gap: 9px;
+        flex-wrap: wrap;
+        margin-top: 18px;
+    }
+
+    .buttons a {
+        display: inline-block;
+        padding: 10px 14px;
+        border-radius: 9px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .view {
+        background: #2563eb;
+        color: white;
+    }
+
+    .view:hover {
+        background: #1d4ed8;
+    }
+
+    .edit {
+        background: #f59e0b;
+        color: white;
+    }
+
+    .edit:hover {
+        background: #d97706;
+    }
+
+    .delete {
+        background: #dc2626;
+        color: white;
+    }
+
+    .delete:hover {
+        background: #b91c1c;
+    }
+
+    .empty {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 16px;
+        padding: 30px;
+        text-align: center;
+        color: #6b7280;
+        box-shadow: 0 6px 22px rgba(0, 0, 0, 0.05);
+    }
+
+    .empty-icon {
+        font-size: 35px;
+        margin-bottom: 10px;
+    }
+
+    .empty strong {
+        color: #374151;
+        font-size: 17px;
+    }
+
+    .empty p {
+        margin-bottom: 0;
+    }
+
+    .back {
+        display: inline-block;
+        margin-top: 8px;
+        padding: 12px 18px;
+        border-radius: 10px;
+        background: #374151;
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .back:hover {
+        background: #1f2937;
+    }
+
+    @media (max-width: 650px) {
+        .page {
+            padding: 20px 12px;
+        }
+
+        .header-card {
+            padding: 22px;
+        }
+
+        .header-top {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        h1 {
+            font-size: 25px;
+        }
+
+        .create {
+            text-align: center;
+        }
+
+        .team-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .buttons {
+            flex-direction: column;
+        }
+
+        .buttons a {
+            width: 100%;
+            text-align: center;
+        }
+    }
+</style>
+
+</head>
+
+<body>
+
+<div class="page">
+
+<div class="header-card">
+
+    <div class="header-top">
+
+        <div>
+            <h1>👥 Мои команды</h1>
+
+            <p class="subtitle">
+                Команды, в которых вы являетесь капитаном или участником.
+            </p>
+        </div>
+
+        <a
+            class="create"
+            href="{% url 'team_create' %}"
+        >
+            + Создать команду
+        </a>
+
+    </div>
+
+</div>
+
+
+{% for team in teams %}
+
+    <div class="team">
+
+        <div class="team-header">
+
+            <a
+                class="team-name"
+                href="{% url 'team_detail' team.id %}"
+            >
+                🛡️ {{ team.name }}
+            </a>
+
+
+            {% if team.captain == request.user %}
+
+                <span class="role">
+                    👑 Капитан
+                </span>
+
+            {% else %}
+
+                <span class="role">
+                    👤 Участник
+                </span>
+
+            {% endif %}
+
+        </div>
+
+
+        <div class="buttons">
+
+            <a
+                class="view"
+                href="{% url 'team_detail' team.id %}"
+            >
+                👁 Открыть
+            </a>
+
+
+            {% if team.captain == request.user %}
+
+                <a
+                    class="edit"
+                    href="{% url 'team_edit' team.id %}"
+                >
+                    ✏️ Изменить
+                </a>
+
+                <a
+                    class="delete"
+                    href="{% url 'team_delete' team.id %}"
+                >
+                    🗑️ Удалить
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+{% empty %}
+
+    <div class="empty">
+
+        <div class="empty-icon">
+            👥
+        </div>
+
+        <strong>
+            У вас пока нет команд.
+        </strong>
+
+        <p>
+            Создайте свою первую команду, чтобы участвовать в турнирах.
+        </p>
+
+    </div>
+
+{% endfor %}
+
+
+<a
+    class="back"
+    href="{% url 'home' %}"
+>
+    ← На главную
+</a>
+
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Изменить команду — TournamentHub</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background:
+            radial-gradient(
+                circle at top right,
+                rgba(37, 99, 235, 0.08),
+                transparent 35%
+            ),
+            #f5f7fb;
+        color: #111827;
+    }
+
+    .page {
+        max-width: 700px;
+        margin: 60px auto;
+        padding: 0 20px 40px;
+    }
+
+    .card {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 20px;
+        padding: 32px;
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.07);
+    }
+
+    .header {
+        margin-bottom: 28px;
+    }
+
+    .header h1 {
+        margin: 0 0 10px;
+        font-size: 30px;
+        color: #111827;
+    }
+
+    .header p {
+        margin: 0;
+        color: #6b7280;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .team-name {
+        color: #2563eb;
+        font-weight: bold;
+    }
+
+    form p {
+        margin: 0 0 20px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 8px;
+        color: #374151;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    input,
+    textarea,
+    select {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1px solid #d1d5db;
+        border-radius: 10px;
+        background: white;
+        color: #111827;
+        font-size: 15px;
+        font-family: Arial, sans-serif;
+        outline: none;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    .helptext {
+        display: block;
+        margin-top: 6px;
+        color: #6b7280;
+        font-size: 12px;
+    }
+
+    .errorlist {
+        margin: 7px 0 0;
+        padding-left: 20px;
+        color: #dc2626;
+        font-size: 13px;
+    }
+
+    .errorlist li {
+        margin-bottom: 4px;
+    }
+
+    .info {
+        margin-bottom: 25px;
+        padding: 15px 17px;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        border-radius: 11px;
+        color: #1e40af;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .buttons {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        align-items: center;
+        margin-top: 28px;
+        padding-top: 22px;
+        border-top: 1px solid #e5e7eb;
+    }
+
+    .save-button,
+    .back-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding: 11px 18px;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+    .save-button {
+        border: none;
+        background: #2563eb;
+        color: white;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .save-button:hover {
+        background: #1d4ed8;
+        transform: translateY(-1px);
+    }
+
+    .back-button {
+        background: #f3f4f6;
+        color: #374151;
+        border: 1px solid #e5e7eb;
+        transition: 0.2s;
+    }
+
+    .back-button:hover {
+        background: #e5e7eb;
+        transform: translateY(-1px);
+    }
+
+    @media (max-width: 600px) {
+        .page {
+            margin-top: 25px;
+            padding: 0 12px 30px;
+        }
+
+        .card {
+            padding: 22px;
+            border-radius: 16px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+        }
+
+        .buttons {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .save-button,
+        .back-button {
+            width: 100%;
+        }
+    }
+</style>
+
+</head>
+
+<body>
+
+<div class="page">
+
+<div class="card">
+
+    <div class="header">
+        <h1>✏️ Изменить команду</h1>
+
+        <p>
+            Вы изменяете команду
+            <span class="team-name">«{{ team.name }}»</span>.
+            После сохранения новое название будет отображаться
+            на странице команды.
+        </p>
+    </div>
+
+    <div class="info">
+        👑 Изменять название команды может только её капитан.
+    </div>
+
+    <form method="post">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <div class="buttons">
+
+            <button
+                type="submit"
+                class="save-button"
+            >
+                💾 Сохранить изменения
+            </button>
+
+            <a
+                href="{% url 'team_detail' team.id %}"
+                class="back-button"
+            >
+                ← Вернуться к команде
+            </a>
+
+        </div>
+
+    </form>
+
+</div>
+
+</div>
+
+</body>
+</html>
