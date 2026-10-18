@@ -10,213 +10,377 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --bg: #090d18;
+            --panel: #111827;
+            --card: #151e30;
+            --border: #27344d;
+            --text: #f1f5f9;
+            --muted: #9aa9c1;
+            --blue: #60a5fa;
+            --purple: #a78bfa;
+        }
+
         body {
             margin: 0;
+            min-height: 100vh;
             font-family: Arial, sans-serif;
+            color: var(--text);
             background:
-                radial-gradient(circle at top right, rgba(37, 99, 235, 0.08), transparent 35%),
-                #f5f7fb;
-            color: #1f2937;
+                radial-gradient(
+                    circle at 85% 0%,
+                    rgba(37, 99, 235, 0.17),
+                    transparent 33%
+                ),
+                radial-gradient(
+                    circle at 5% 85%,
+                    rgba(124, 58, 237, 0.09),
+                    transparent 28%
+                ),
+                var(--bg);
+        }
+
+        a {
+            -webkit-tap-highlight-color: transparent;
         }
 
         .container {
-            max-width: 1050px;
+            max-width: 1100px;
             margin: 0 auto;
             padding: 45px 25px 60px;
         }
 
+        /* ЗАГОЛОВОК */
+
         .header-card {
-            background: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 22px;
-            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            padding: 32px;
             margin-bottom: 25px;
-            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+            border: 1px solid #34476b;
+            border-radius: 23px;
+            background:
+                radial-gradient(
+                    circle at 95% 15%,
+                    rgba(167, 139, 250, 0.2),
+                    transparent 30%
+                ),
+                linear-gradient(135deg, #172747, #121a2d 75%);
+            box-shadow: 0 18px 50px rgba(0, 0, 0, 0.2);
         }
 
         .header-top {
+            position: relative;
+            z-index: 1;
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
-            gap: 20px;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            margin-bottom: 12px;
+            padding: 7px 11px;
+            border: 1px solid rgba(96, 165, 250, 0.25);
+            border-radius: 30px;
+            background: rgba(59, 130, 246, 0.1);
+            color: #93c5fd;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
         h1 {
             margin: 0;
-            font-size: 32px;
-            color: #111827;
+            font-size: clamp(29px, 4vw, 38px);
+            letter-spacing: -1px;
         }
 
         .subtitle {
-            margin: 10px 0 0;
-            color: #6b7280;
-            line-height: 1.6;
+            max-width: 620px;
+            margin: 12px 0 0;
+            color: #b7c5dc;
+            font-size: 15px;
+            line-height: 1.8;
         }
 
         .create {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 12px 18px;
-            background: #2563eb;
+            gap: 8px;
+            min-height: 46px;
+            padding: 13px 18px;
+            border: 1px solid transparent;
+            border-radius: 11px;
+            background: linear-gradient(110deg, #3b82f6, #7059e8);
             color: white;
             text-decoration: none;
-            border-radius: 11px;
-            font-weight: 600;
+            font-size: 14px;
+            font-weight: 700;
             white-space: nowrap;
-            box-shadow: 0 6px 15px rgba(37, 99, 235, 0.22);
-            transition: 0.2s;
+            box-shadow: 0 7px 20px rgba(59, 130, 246, 0.22);
+            transition: 0.2s ease;
         }
 
         .create:hover {
-            background: #1d4ed8;
-            transform: translateY(-1px);
+            filter: brightness(1.12);
+            transform: translateY(-2px);
+        }
+
+        /* СПИСОК ТУРНИРОВ */
+
+        .list-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin: 30px 0 17px;
+        }
+
+        .list-heading h2 {
+            margin: 0;
+            font-size: 21px;
+        }
+
+        .list-label {
+            color: var(--muted);
+            font-size: 13px;
         }
 
         .tournament {
-            background: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 18px;
+            position: relative;
+            overflow: hidden;
             padding: 25px;
-            margin-bottom: 18px;
-            box-shadow: 0 8px 25px rgba(15, 23, 42, 0.05);
-            transition: 0.2s;
+            margin-bottom: 17px;
+            border: 1px solid var(--border);
+            border-radius: 19px;
+            background: linear-gradient(
+                145deg,
+                rgba(21, 30, 48, 0.98),
+                rgba(15, 23, 39, 0.98)
+            );
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+            transition: 0.22s ease;
         }
 
         .tournament:hover {
-            border-color: #cbd5e1;
-            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+            border-color: #496796;
+            transform: translateY(-2px);
+            box-shadow: 0 17px 38px rgba(0, 0, 0, 0.2);
         }
 
         .tournament h2 {
-            margin: 0 0 18px;
-            color: #2563eb;
+            margin: 0 0 21px;
+            color: #93c5fd;
             font-size: 22px;
+            line-height: 1.4;
+            overflow-wrap: anywhere;
         }
+
+        .tournament-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 21px;
+        }
+
+        .tournament-top h2 {
+            margin: 0;
+        }
+
+        .trophy {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 48px;
+            height: 48px;
+            flex-shrink: 0;
+            border: 1px solid #34466a;
+            border-radius: 14px;
+            background: #1b2a46;
+            font-size: 23px;
+        }
+
+        /* ИНФОРМАЦИЯ */
 
         .info-grid {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 10px;
+            gap: 11px;
         }
 
         .info {
-            padding: 11px 13px;
-            background: #f8fafc;
-            border-radius: 10px;
-            color: #6b7280;
-            font-size: 14px;
-            border: 1px solid #f0f2f5;
+            min-width: 0;
+            padding: 13px 14px;
+            border: 1px solid #293853;
+            border-radius: 11px;
+            background: rgba(24, 36, 57, 0.65);
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.7;
+            overflow-wrap: anywhere;
         }
 
         .info strong {
-            color: #374151;
+            color: #e2e8f0;
+            font-weight: 600;
         }
 
-        .status {
-            display: inline-block;
-            padding: 6px 10px;
-            margin-left: 5px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 600;
-            background: #fef3c7;
-            color: #92400e;
+        .info-label {
+            display: block;
+            margin-bottom: 4px;
+            color: #8193b0;
+            font-size: 12px;
         }
+
+        /* СТАТУСЫ */
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 11px;
+            border: 1px solid rgba(251, 191, 36, 0.2);
+            border-radius: 8px;
+            background: rgba(251, 191, 36, 0.1);
+            color: #fcd34d;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .status.started {
+            border-color: rgba(96, 165, 250, 0.25);
+            background: rgba(96, 165, 250, 0.12);
+            color: #93c5fd;
+        }
+
+        .status.finished {
+            border-color: rgba(74, 222, 128, 0.22);
+            background: rgba(74, 222, 128, 0.1);
+            color: #4ade80;
+        }
+
+        /* КНОПКИ */
 
         .buttons {
             display: flex;
             flex-wrap: wrap;
             gap: 9px;
-            margin-top: 20px;
+            margin-top: 21px;
             padding-top: 18px;
-            border-top: 1px solid #eef0f3;
+            border-top: 1px solid #293853;
         }
 
         .buttons a {
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            gap: 7px;
+            min-height: 39px;
             padding: 10px 15px;
+            border: 1px solid transparent;
             border-radius: 9px;
             text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
-            transition: 0.2s;
+            font-size: 13px;
+            font-weight: 700;
+            transition: 0.2s ease;
         }
 
         .open {
-            background: #2563eb;
+            background: linear-gradient(110deg, #3b82f6, #7059e8);
             color: white;
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.18);
         }
 
         .open:hover {
-            background: #1d4ed8;
+            filter: brightness(1.12);
             transform: translateY(-1px);
         }
 
         .edit {
-            background: #fff7ed;
-            color: #c2410c;
-            border: 1px solid #fed7aa;
+            border-color: #654d29 !important;
+            background: rgba(245, 158, 11, 0.1);
+            color: #fbbf24;
         }
 
         .edit:hover {
-            background: #ffedd5;
+            background: rgba(245, 158, 11, 0.18);
         }
 
         .delete {
-            background: #fff1f2;
-            color: #dc2626;
-            border: 1px solid #fecdd3;
+            border-color: #633344 !important;
+            background: rgba(244, 63, 94, 0.09);
+            color: #fb7185;
         }
 
         .delete:hover {
-            background: #ffe4e6;
+            background: rgba(244, 63, 94, 0.17);
         }
 
+        /* ПУСТОЙ СПИСОК И НАЗАД */
+
         .empty {
-            background: white;
-            border: 1px dashed #cbd5e1;
+            padding: 40px 22px;
+            border: 1px dashed #34445f;
             border-radius: 18px;
-            padding: 35px;
+            background: rgba(17, 24, 39, 0.75);
+            color: var(--muted);
             text-align: center;
-            color: #6b7280;
-            box-shadow: 0 8px 25px rgba(15, 23, 42, 0.04);
+            line-height: 1.8;
+        }
+
+        .empty-icon {
+            display: block;
+            margin-bottom: 12px;
+            font-size: 38px;
+        }
+
+        .empty h2 {
+            margin: 0 0 8px;
+            color: var(--text);
+            font-size: 20px;
         }
 
         .back {
             display: inline-flex;
-            margin-top: 8px;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
             padding: 11px 15px;
-            text-decoration: none;
-            color: #4b5563;
-            background: white;
-            border: 1px solid #e5e7eb;
+            border: 1px solid var(--border);
             border-radius: 10px;
+            background: var(--panel);
+            color: #cbd5e1;
+            text-decoration: none;
             font-size: 14px;
             font-weight: 600;
-            transition: 0.2s;
+            transition: 0.2s ease;
         }
 
         .back:hover {
-            color: #2563eb;
-            border-color: #bfdbfe;
-            background: #f8fbff;
+            border-color: #496796;
+            background: #1a2740;
+            color: white;
         }
 
         @media (max-width: 700px) {
             .container {
-                padding: 25px 15px 40px;
+                padding: 24px 15px 40px;
             }
 
             .header-card {
-                padding: 23px;
+                padding: 24px 20px;
+                border-radius: 19px;
             }
 
             .header-top {
+                align-items: stretch;
                 flex-direction: column;
+                gap: 20px;
             }
 
             .create {
@@ -224,19 +388,42 @@
             }
 
             h1 {
-                font-size: 27px;
+                font-size: 28px;
+            }
+
+            .subtitle {
+                font-size: 14px;
+            }
+
+            .list-heading {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 7px;
+            }
+
+            .tournament {
+                padding: 19px;
+                border-radius: 16px;
+            }
+
+            .tournament h2 {
+                font-size: 19px;
             }
 
             .info-grid {
                 grid-template-columns: 1fr;
             }
 
-            .tournament {
-                padding: 20px;
-            }
-
             .buttons a {
                 flex: 1 1 100%;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                transition: none !important;
             }
         }
     </style>
@@ -245,14 +432,14 @@
 <body>
 <div class="container">
 
-    <!-- Заголовок -->
-    <div class="header-card">
+    <header class="header-card">
         <div class="header-top">
             <div>
+                <div class="eyebrow">⚡ Арена соревнований</div>
                 <h1>🏆 Турниры</h1>
                 <p class="subtitle">
-                    Создавайте турниры, подавайте заявки
-                    и участвуйте в соревнованиях.
+                    Создавай соревнования, регистрируй команды,
+                    следи за ходом турниров и борись за победу.
                 </p>
             </div>
 
@@ -262,53 +449,67 @@
                 </a>
             {% endif %}
         </div>
+    </header>
+
+    <div class="list-heading">
+        <h2>🎮 Доступные турниры</h2>
+        <span class="list-label">
+            Выбери турнир, чтобы узнать подробности
+        </span>
     </div>
 
-    <!-- Список турниров -->
     {% for tournament in tournaments %}
-        <div class="tournament">
-            <h2>🏆 {{ tournament.name }}</h2>
+        <article class="tournament">
+
+            <div class="tournament-top">
+                <h2>🏆 {{ tournament.name }}</h2>
+                <div class="trophy">🎮</div>
+            </div>
 
             <div class="info-grid">
                 <div class="info">
-                    🎮 Игра:
+                    <span class="info-label">🎮 Игра</span>
                     <strong>{{ tournament.game }}</strong>
                 </div>
 
                 <div class="info">
-                    👥 Размер команды:
+                    <span class="info-label">👥 Размер команды</span>
                     <strong>{{ tournament.get_team_size_display }}</strong>
                 </div>
 
                 <div class="info">
-                    🏆 Максимум команд:
+                    <span class="info-label">🏆 Максимум команд</span>
                     <strong>{{ tournament.max_teams }}</strong>
                 </div>
 
                 <div class="info">
-                    📅 Дата:
-                    <strong>{{ tournament.tournament_date|date:"d.m.Y H:i" }}</strong>
+                    <span class="info-label">📅 Дата турнира</span>
+                    <strong>
+                        {{ tournament.tournament_date|date:"d.m.Y H:i" }}
+                    </strong>
                 </div>
 
                 <div class="info">
-                    ⏰ Регистрация до:
-                    <strong>{{ tournament.registration_deadline|date:"d.m.Y H:i" }}</strong>
+                    <span class="info-label">⏰ Регистрация до</span>
+                    <strong>
+                        {{ tournament.registration_deadline|date:"d.m.Y H:i" }}
+                    </strong>
                 </div>
 
                 <div class="info">
-                    📌 Статус:
+                    <span class="info-label">📌 Статус турнира</span>
 
                     {% if tournament.status == "registration" %}
                         <span class="status">
-                            {{ tournament.get_status_display }}
+                            ⏳ {{ tournament.get_status_display }}
                         </span>
                     {% elif tournament.status == "started" %}
-                        <span class="status" style="background:#dbeafe; color:#1e40af;">
-                            {{ tournament.get_status_display }}
+                        <span class="status started">
+                            ⚔️ {{ tournament.get_status_display }}
                         </span>
                     {% elif tournament.status == "finished" %}
-                        <span class="status" style="background:#dcfce7; color:#166534;">
-                            {{ tournament.get_status_display }}
+                        <span class="status finished">
+                            🏆 {{ tournament.get_status_display }}
                         </span>
                     {% else %}
                         <span class="status">
@@ -318,31 +519,41 @@
                 </div>
             </div>
 
-            <!-- Кнопки -->
             <div class="buttons">
-                <a class="open" href="{% url 'tournament_detail' tournament.id %}">
-                    Открыть
+                <a class="open"
+                   href="{% url 'tournament_detail' tournament.id %}">
+                    Открыть турнир →
                 </a>
 
                 {% if tournament.organizer == request.user %}
-                    <a class="edit" href="{% url 'tournament_edit' tournament.id %}">
+                    <a class="edit"
+                       href="{% url 'tournament_edit' tournament.id %}">
                         ✏️ Изменить
                     </a>
 
-                    <a class="delete" href="{% url 'tournament_delete' tournament.id %}">
+                    <a class="delete"
+                       href="{% url 'tournament_delete' tournament.id %}">
                         🗑 Удалить
                     </a>
                 {% endif %}
             </div>
-        </div>
 
+        </article>
     {% empty %}
         <div class="empty">
-            🏆 Пока нет созданных турниров.
+            <span class="empty-icon">🏆</span>
+            <h2>Пока нет турниров</h2>
+            Здесь появятся соревнования, как только их создадут.
+            {% if request.user.is_authenticated %}
+                <div style="margin-top: 18px;">
+                    <a class="create" href="{% url 'tournament_create' %}">
+                        ➕ Создать первый турнир
+                    </a>
+                </div>
+            {% endif %}
         </div>
     {% endfor %}
 
-    <!-- Назад -->
     <a class="back" href="{% url 'home' %}">
         ← На главную
     </a>

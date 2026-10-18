@@ -1,268 +1,357 @@
 <!DOCTYPE html>
-
 <html lang="ru">
-
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-```
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
+    <title>Результат матча — {{ tournament.name }}</title>
 
-<title>
-    Результат матча — {{ tournament.name }}
-</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-<style>
-    * {
-        box-sizing: border-box;
-    }
-
-    body {
-        margin: 0;
-        padding: 40px 20px;
-        font-family: Arial, sans-serif;
-        background: #f5f7fb;
-        color: #1f2937;
-    }
-
-    .container {
-        max-width: 700px;
-        margin: 0 auto;
-    }
-
-    .card {
-        background: white;
-        border-radius: 16px;
-        padding: 30px;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
-    }
-
-    .back {
-        display: inline-block;
-        margin-bottom: 20px;
-        color: #2563eb;
-        text-decoration: none;
-        font-weight: bold;
-    }
-
-    .back:hover {
-        text-decoration: underline;
-    }
-
-    h1 {
-        margin: 0 0 8px;
-        color: #2563eb;
-        font-size: 30px;
-    }
-
-    .subtitle {
-        color: #6b7280;
-        margin-bottom: 30px;
-    }
-
-    .match-card {
-        background: #f8fafc;
-        border-radius: 12px;
-        padding: 20px;
-        margin-bottom: 25px;
-    }
-
-    .match-number {
-        color: #6b7280;
-        font-size: 14px;
-        margin-bottom: 15px;
-    }
-
-    .teams {
-        display: grid;
-        grid-template-columns: 1fr 50px 1fr;
-        align-items: center;
-        gap: 15px;
-    }
-
-    .team {
-        background: white;
-        border: 1px solid #e5e7eb;
-        border-radius: 10px;
-        padding: 18px;
-        text-align: center;
-        font-weight: bold;
-        font-size: 18px;
-    }
-
-    .vs {
-        text-align: center;
-        color: #6b7280;
-        font-weight: bold;
-    }
-
-    .info {
-        padding: 14px;
-        background: #dbeafe;
-        color: #1e40af;
-        border-radius: 10px;
-        margin-bottom: 25px;
-        line-height: 1.5;
-    }
-
-    .form-group {
-        margin-bottom: 20px;
-    }
-
-    label {
-        display: block;
-        font-weight: bold;
-        margin-bottom: 8px;
-        color: #374151;
-    }
-
-    input[type="number"] {
-        width: 100%;
-        padding: 13px 14px;
-        border: 1px solid #d1d5db;
-        border-radius: 9px;
-        font-size: 16px;
-        outline: none;
-    }
-
-    input[type="number"]:focus {
-        border-color: #2563eb;
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
-    }
-
-    .errors {
-        margin-bottom: 20px;
-        padding: 14px;
-        background: #fee2e2;
-        color: #991b1b;
-        border-radius: 10px;
-    }
-
-    .field-error {
-        margin-top: 6px;
-        color: #dc2626;
-        font-size: 14px;
-    }
-
-    .actions {
-        display: flex;
-        gap: 12px;
-        margin-top: 25px;
-    }
-
-    .button {
-        flex: 1;
-        display: inline-block;
-        padding: 13px 18px;
-        border: none;
-        border-radius: 9px;
-        font-size: 15px;
-        font-weight: bold;
-        text-align: center;
-        text-decoration: none;
-        cursor: pointer;
-    }
-
-    .save-button {
-        background: #2563eb;
-        color: white;
-    }
-
-    .save-button:hover {
-        background: #1d4ed8;
-    }
-
-    .cancel-button {
-        background: #e5e7eb;
-        color: #374151;
-    }
-
-    .cancel-button:hover {
-        background: #d1d5db;
-    }
-
-    .hint {
-        margin-top: 20px;
-        color: #6b7280;
-        font-size: 14px;
-        line-height: 1.5;
-    }
-
-    @media (max-width: 650px) {
         body {
-            padding: 20px 12px;
+            margin: 0;
+            min-height: 100vh;
+            padding: 40px 20px;
+            font-family: Arial, sans-serif;
+            background:
+                radial-gradient(circle at top right, rgba(79, 70, 229, 0.16), transparent 35%),
+                #090d18;
+            color: #e8edf8;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: #a5b4fc;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.2s;
+        }
+
+        .back:hover {
+            color: #c4b5fd;
         }
 
         .card {
-            padding: 20px;
+            padding: 32px;
+            background: #151e30;
+            border: 1px solid #293853;
+            border-radius: 20px;
+            box-shadow: 0 20px 55px rgba(0, 0, 0, 0.25);
+        }
+
+        h1 {
+            margin: 0 0 10px;
+            color: #ffffff;
+            font-size: 30px;
+            line-height: 1.3;
+        }
+
+        .subtitle {
+            margin-bottom: 28px;
+            color: #a5b4cc;
+            line-height: 1.5;
+        }
+
+        .match-card {
+            margin-bottom: 24px;
+            padding: 22px;
+            background: #0e1626;
+            border: 1px solid #293853;
+            border-radius: 15px;
+        }
+
+        .match-number {
+            margin-bottom: 18px;
+            color: #94a3b8;
+            font-size: 14px;
         }
 
         .teams {
-            grid-template-columns: 1fr;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 44px minmax(0, 1fr);
+            align-items: center;
+            gap: 12px;
+        }
+
+        .team {
+            min-width: 0;
+            padding: 18px 12px;
+            overflow-wrap: anywhere;
+            text-align: center;
+            font-size: 17px;
+            font-weight: bold;
+            color: #f1f5f9;
+            background: #1b2940;
+            border: 1px solid #344766;
+            border-radius: 12px;
         }
 
         .vs {
-            padding: 5px;
+            text-align: center;
+            color: #a5b4fc;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .info {
+            margin-bottom: 24px;
+            padding: 15px 17px;
+            background: rgba(79, 70, 229, 0.13);
+            border: 1px solid rgba(129, 140, 248, 0.3);
+            border-radius: 12px;
+            color: #c7d2fe;
+            line-height: 1.6;
+        }
+
+        .errors {
+            margin-bottom: 22px;
+            padding: 15px 18px;
+            background: rgba(220, 38, 38, 0.12);
+            border: 1px solid rgba(248, 113, 113, 0.35);
+            border-radius: 12px;
+            color: #fca5a5;
+            line-height: 1.6;
+        }
+
+        .errors ul {
+            margin: 8px 0 0;
+            padding-left: 22px;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 9px;
+            color: #e2e8f0;
+            font-weight: bold;
+        }
+
+        input[type="number"] {
+            display: block;
+            width: 100%;
+            padding: 14px 15px;
+            color: #f8fafc;
+            background: #0e1626;
+            border: 1px solid #344766;
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input[type="number"]::placeholder {
+            color: #64748b;
+        }
+
+        input[type="number"]:focus {
+            border-color: #818cf8;
+            box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.15);
+        }
+
+        .field-error {
+            margin-top: 7px;
+            color: #fca5a5;
+            font-size: 14px;
+            line-height: 1.5;
         }
 
         .actions {
-            flex-direction: column;
+            display: flex;
+            gap: 12px;
+            margin-top: 28px;
         }
-    }
-</style>
-```
 
+        .button {
+            flex: 1;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 48px;
+            padding: 13px 18px;
+            border: 1px solid transparent;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .button:hover {
+            transform: translateY(-1px);
+        }
+
+        .save-button {
+            color: white;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        }
+
+        .save-button:hover {
+            background: linear-gradient(135deg, #4338ca, #6d28d9);
+        }
+
+        .cancel-button {
+            color: #e2e8f0;
+            background: #26344b;
+            border-color: #3a4b68;
+        }
+
+        .cancel-button:hover {
+            background: #33445f;
+        }
+
+        .hint {
+            margin-top: 20px;
+            color: #94a3b8;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 22px 12px;
+            }
+
+            .card {
+                padding: 21px 17px;
+            }
+
+            h1 {
+                font-size: 25px;
+            }
+
+            .match-card {
+                padding: 16px 12px;
+            }
+
+            .teams {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .vs {
+                padding: 2px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
 
 <body>
+    <div class="container">
+        <a class="back" href="{% url 'tournament_bracket' tournament.id %}">
+            ← Вернуться к сетке
+        </a>
 
-<div class="container">
+        <div class="card">
+            <h1>📝 Результат матча</h1>
 
-```
-<a
-    class="back"
-    href="{% url 'tournament_bracket' tournament.id %}"
->
-    ← Вернуться к сетке
-</a>
+            <div class="subtitle">
+                🏆 {{ tournament.name }}
+            </div>
 
-<div class="card">
+            <div class="match-card">
+                <div class="match-number">
+                    Матч {{ match.match_number }}
+                </div>
 
-    <h1>📝 Результат матча</h1>
+                <div class="teams">
+                    <div class="team">
+                        🛡️ {{ match.team1.name }}
+                    </div>
 
-    <div class="subtitle">
-        🏆 {{ tournament.name }}
-    </div>
+                    <div class="vs">VS</div>
 
-    <div class="match-card">
+                    <div class="team">
+                        🛡️ {{ match.team2.name }}
+                    </div>
+                </div>
+            </div>
 
-        <div class="match-number">
-            Матч {{ match.match_number }}
+            <div class="info">
+                👑 Вы организатор этого турнира.<br>
+                Укажите счёт обеих команд. Ничья недопустима.
+            </div>
+
+            <form method="post">
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                    <div class="errors">
+                        <strong>⚠️ Проверьте результат матча:</strong>
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+
+                {% if form.errors and not form.non_field_errors %}
+                    <div class="errors">
+                        <strong>⚠️ Исправьте ошибки в форме:</strong>
+                        {{ form.errors }}
+                    </div>
+                {% endif %}
+
+                <div class="form-group">
+                    <label for="{{ form.score1.id_for_label }}">
+                        🛡️ {{ form.score1.label }}
+                    </label>
+
+                    {{ form.score1 }}
+
+                    {% for error in form.score1.errors %}
+                        <div class="field-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.score2.id_for_label }}">
+                        🛡️ {{ form.score2.label }}
+                    </label>
+
+                    {{ form.score2 }}
+
+                    {% for error in form.score2.errors %}
+                        <div class="field-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="actions">
+                    <button type="submit" class="button save-button">
+                        💾 Сохранить результат
+                    </button>
+
+                    <a
+                        class="button cancel-button"
+                        href="{% url 'tournament_bracket' tournament.id %}"
+                    >
+                        Отмена
+                    </a>
+                </div>
+            </form>
+
+            <div class="hint">
+                💡 Введите количество очков для каждой команды.
+                Счёт может быть нулевым, но одинаковые результаты запрещены.
+                После сохранения победитель определяется автоматически,
+                если это предусмотрено логикой обработки матча.
+            </div>
         </div>
-
-        <div class="teams">
-
-            <div class="team">
-                🛡️ {{ match.team1.name }}
-            </div>
-
-            <div class="vs">
-                VS
-            </div>
-
-            <div class="team">
-                🛡️ {{ match.team2.name }}
-            </div>
-
-        </div>
-
     </div>
-
-    <div class="info">
-        👑 Вы организатор этого турнира.<br>
-        Укажите счёт обеих команд. Ничья недопустима.
-    </div>
-```
+</body>
+</h

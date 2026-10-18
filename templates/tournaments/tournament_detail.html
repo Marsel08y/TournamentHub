@@ -1,613 +1,715 @@
 <!DOCTYPE html>
-
 <html lang="ru">
-
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ tournament.name }} — TournamentHub</title>
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-<title>{{ tournament.name }} — TournamentHub</title>
+        :root {
+            --bg: #090d18;
+            --panel: #111827;
+            --card: #151e30;
+            --border: #27344d;
+            --text: #f1f5f9;
+            --muted: #9aa9c1;
+            --blue: #60a5fa;
+            --purple: #a78bfa;
+            --green: #4ade80;
+            --red: #fb7185;
+        }
 
-<style>
-    * {
-        box-sizing: border-box;
-    }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(
+                    circle at 85% 0%,
+                    rgba(37, 99, 235, 0.17),
+                    transparent 33%
+                ),
+                radial-gradient(
+                    circle at 5% 85%,
+                    rgba(124, 58, 237, 0.09),
+                    transparent 28%
+                ),
+                var(--bg);
+        }
 
-    body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background:
-            radial-gradient(
-                circle at top right,
-                rgba(37, 99, 235, 0.08),
-                transparent 35%
-            ),
-            #f5f7fb;
-        color: #1f2937;
-    }
+        a, button {
+            -webkit-tap-highlight-color: transparent;
+        }
 
-    .container {
-        max-width: 1050px;
-        margin: 0 auto;
-        padding: 45px 25px 60px;
-    }
-
-    .header-card,
-    .info-card,
-    .team {
-        background: white;
-        border: 1px solid #e5e7eb;
-        box-shadow: 0 8px 25px rgba(15, 23, 42, 0.05);
-    }
-
-    .header-card {
-        border-radius: 22px;
-        padding: 30px;
-        margin-bottom: 22px;
-    }
-
-    h1 {
-        margin: 0;
-        font-size: 32px;
-        color: #111827;
-        line-height: 1.25;
-    }
-
-    .subtitle {
-        margin: 10px 0 0;
-        color: #6b7280;
-        font-size: 15px;
-        line-height: 1.6;
-    }
-
-    .organizer-box {
-        margin-top: 20px;
-        padding: 14px 17px;
-        background: #eef4ff;
-        border: 1px solid #cfe0ff;
-        color: #1e40af;
-        border-radius: 11px;
-        font-size: 14px;
-        font-weight: 600;
-    }
-
-    .info-card {
-        border-radius: 18px;
-        padding: 25px;
-        margin-bottom: 22px;
-    }
-
-    .info-grid {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 12px;
-    }
-
-    .info-row {
-        padding: 15px;
-        background: #f8fafc;
-        border: 1px solid #eef0f3;
-        border-radius: 12px;
-    }
-
-    .label {
-        color: #6b7280;
-        font-size: 13px;
-        margin-bottom: 7px;
-    }
-
-    .value {
-        font-size: 16px;
-        font-weight: 600;
-        color: #111827;
-    }
-
-    .status {
-        display: inline-block;
-        padding: 7px 11px;
-        border-radius: 8px;
-        background: #fef3c7;
-        color: #92400e;
-        font-size: 13px;
-        font-weight: 600;
-    }
-
-    .status.started {
-        background: #dbeafe;
-        color: #1e40af;
-    }
-
-    .status.finished {
-        background: #dcfce7;
-        color: #166534;
-    }
-
-    .rules-title {
-        margin-bottom: 12px;
-        color: #111827;
-        font-size: 18px;
-        font-weight: bold;
-    }
-
-    .rules {
-        white-space: pre-wrap;
-        line-height: 1.7;
-        color: #4b5563;
-        background: #f8fafc;
-        border-radius: 12px;
-        padding: 18px;
-        border: 1px solid #eef0f3;
-    }
-
-    .section {
-        margin-top: 25px;
-    }
-
-    .section-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 15px;
-    }
-
-    .section h2 {
-        margin: 0;
-        color: #111827;
-        font-size: 22px;
-    }
-
-    .team {
-        padding: 17px;
-        border-radius: 14px;
-        margin-bottom: 11px;
-    }
-
-    .team-name {
-        font-size: 17px;
-        font-weight: bold;
-        color: #2563eb;
-    }
-
-    .captain {
-        color: #6b7280;
-        margin-top: 7px;
-        font-size: 14px;
-    }
-
-    .application-status {
-        display: inline-block;
-        margin-top: 10px;
-        padding: 6px 10px;
-        border-radius: 8px;
-        font-size: 13px;
-        font-weight: 600;
-    }
-
-    .accepted {
-        background: #dcfce7;
-        color: #166534;
-    }
-
-    .pending {
-        background: #fef3c7;
-        color: #92400e;
-    }
-
-    .rejected {
-        background: #fee2e2;
-        color: #991b1b;
-    }
-
-    .buttons {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 9px;
-        margin-top: 25px;
-        padding-top: 20px;
-        border-top: 1px solid #eef0f3;
-    }
-
-    .button {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        padding: 11px 16px;
-        border-radius: 10px;
-        text-decoration: none;
-        color: white;
-        border: none;
-        cursor: pointer;
-        font-size: 14px;
-        font-weight: 600;
-        transition: 0.2s;
-    }
-
-    .button:hover {
-        transform: translateY(-1px);
-    }
-
-    .register {
-        background: #16a34a;
-    }
-
-    .register:hover {
-        background: #15803d;
-    }
-
-    .applications {
-        background: #7c3aed;
-    }
-
-    .applications:hover {
-        background: #6d28d9;
-    }
-
-    .draw {
-        background: #f59e0b;
-    }
-
-    .draw:hover {
-        background: #d97706;
-    }
-
-    .bracket {
-        background: #2563eb;
-    }
-
-    .bracket:hover {
-        background: #1d4ed8;
-    }
-
-    .edit {
-        background: #0891b2;
-    }
-
-    .edit:hover {
-        background: #0e7490;
-    }
-
-    .delete {
-        background: #dc2626;
-    }
-
-    .delete:hover {
-        background: #b91c1c;
-    }
-
-    .empty {
-        padding: 25px;
-        background: white;
-        border: 1px dashed #cbd5e1;
-        color: #6b7280;
-        border-radius: 14px;
-        text-align: center;
-    }
-
-    .back {
-        display: inline-flex;
-        margin-top: 5px;
-        padding: 11px 15px;
-        color: #4b5563;
-        background: white;
-        border: 1px solid #e5e7eb;
-        border-radius: 10px;
-        text-decoration: none;
-        font-size: 14px;
-        font-weight: 600;
-    }
-
-    .back:hover {
-        color: #2563eb;
-        border-color: #bfdbfe;
-        background: #f8fbff;
-    }
-
-    .message {
-        padding: 14px 17px;
-        margin-bottom: 20px;
-        background: #eff6ff;
-        border: 1px solid #bfdbfe;
-        color: #1e40af;
-        border-radius: 10px;
-    }
-
-    @media (max-width: 700px) {
         .container {
-            padding: 25px 15px 40px;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 25px 60px;
         }
 
-        .info-grid {
-            grid-template-columns: 1fr;
+        /* ЗАГОЛОВОК */
+
+        .header-card {
+            position: relative;
+            overflow: hidden;
+            padding: 35px;
+            margin-bottom: 22px;
+            border: 1px solid #34476b;
+            border-radius: 23px;
+            background:
+                radial-gradient(
+                    circle at 95% 15%,
+                    rgba(167, 139, 250, 0.2),
+                    transparent 30%
+                ),
+                linear-gradient(135deg, #172747, #121a2d 75%);
+            box-shadow: 0 18px 50px rgba(0, 0, 0, 0.2);
         }
 
-        .header-card,
-        .info-card {
-            padding: 20px;
+        .eyebrow {
+            display: inline-block;
+            padding: 7px 11px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(96, 165, 250, 0.25);
+            border-radius: 30px;
+            background: rgba(59, 130, 246, 0.1);
+            color: #93c5fd;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
         h1 {
-            font-size: 26px;
+            position: relative;
+            z-index: 1;
+            margin: 0;
+            max-width: 850px;
+            font-size: clamp(28px, 4vw, 39px);
+            line-height: 1.25;
+            letter-spacing: -0.7px;
+            overflow-wrap: anywhere;
         }
 
+        .subtitle {
+            margin-top: 13px;
+            color: #b7c5dc;
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        .organizer-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 22px;
+            padding: 14px 16px;
+            border: 1px solid rgba(96, 165, 250, 0.25);
+            border-radius: 12px;
+            background: rgba(59, 130, 246, 0.1);
+            color: #bfdbfe;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* ОБЩИЕ КАРТОЧКИ */
+
+        .info-card {
+            padding: 27px;
+            margin-bottom: 22px;
+            border: 1px solid var(--border);
+            border-radius: 19px;
+            background: linear-gradient(
+                145deg,
+                rgba(21, 30, 48, 0.98),
+                rgba(15, 23, 39, 0.98)
+            );
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 21px;
+        }
+
+        .section-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 43px;
+            height: 43px;
+            flex-shrink: 0;
+            border: 1px solid #34466a;
+            border-radius: 13px;
+            background: #1b2a46;
+            font-size: 21px;
+        }
+
+        .section-heading h2 {
+            margin: 0;
+            font-size: 20px;
+            line-height: 1.4;
+        }
+
+        .section-subtitle {
+            margin: 5px 0 0;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        /* ИНФОРМАЦИЯ О ТУРНИРЕ */
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .info-row {
+            min-width: 0;
+            padding: 15px;
+            border: 1px solid #293853;
+            border-radius: 12px;
+            background: rgba(24, 36, 57, 0.65);
+        }
+
+        .label {
+            margin-bottom: 8px;
+            color: #8193b0;
+            font-size: 12px;
+        }
+
+        .value {
+            color: #e2e8f0;
+            font-size: 15px;
+            font-weight: 600;
+            line-height: 1.6;
+            overflow-wrap: anywhere;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 11px;
+            border: 1px solid rgba(251, 191, 36, 0.2);
+            border-radius: 8px;
+            background: rgba(251, 191, 36, 0.1);
+            color: #fcd34d;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .status.started {
+            border-color: rgba(96, 165, 250, 0.25);
+            background: rgba(96, 165, 250, 0.12);
+            color: #93c5fd;
+        }
+
+        .status.finished {
+            border-color: rgba(74, 222, 128, 0.22);
+            background: rgba(74, 222, 128, 0.1);
+            color: #4ade80;
+        }
+
+        /* ПРАВИЛА */
+
+        .rules {
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            padding: 19px;
+            border: 1px solid #293853;
+            border-radius: 12px;
+            background: rgba(24, 36, 57, 0.65);
+            color: #cbd5e1;
+            font-size: 14px;
+            line-height: 1.85;
+        }
+
+        .rules-empty {
+            color: var(--muted);
+            font-style: italic;
+        }
+
+        /* ЗАРЕГИСТРИРОВАННЫЕ КОМАНДЫ */
+
+        .section {
+            margin-top: 28px;
+        }
+
+        .section-header {
+            margin-bottom: 16px;
+        }
+
+        .section-header h2 {
+            margin: 0;
+            font-size: 22px;
+            line-height: 1.4;
+        }
+
+        .team {
+            padding: 19px;
+            margin-bottom: 12px;
+            border: 1px solid #293853;
+            border-radius: 15px;
+            background: linear-gradient(
+                145deg,
+                rgba(21, 30, 48, 0.98),
+                rgba(15, 23, 39, 0.98)
+            );
+            transition: 0.2s ease;
+        }
+
+        .team:hover {
+            border-color: #496796;
+            background: #17243a;
+        }
+
+        .team-name {
+            color: #93c5fd;
+            font-size: 17px;
+            font-weight: 700;
+            overflow-wrap: anywhere;
+        }
+
+        .captain {
+            margin-top: 10px;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-wrap: anywhere;
+        }
+
+        .application-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 13px;
+            padding: 7px 10px;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .accepted {
+            border-color: rgba(74, 222, 128, 0.2);
+            background: rgba(74, 222, 128, 0.1);
+            color: var(--green);
+        }
+
+        .pending {
+            border-color: rgba(251, 191, 36, 0.2);
+            background: rgba(251, 191, 36, 0.1);
+            color: #fcd34d;
+        }
+
+        .rejected {
+            border-color: rgba(251, 113, 133, 0.2);
+            background: rgba(251, 113, 133, 0.1);
+            color: var(--red);
+        }
+
+        .empty {
+            padding: 30px 20px;
+            border: 1px dashed #34445f;
+            border-radius: 14px;
+            background: rgba(9, 15, 27, 0.35);
+            color: var(--muted);
+            text-align: center;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .empty-icon {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 30px;
+        }
+
+        /* СООБЩЕНИЯ DJANGO */
+
+        .message {
+            padding: 14px 17px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(96, 165, 250, 0.25);
+            border-radius: 11px;
+            background: rgba(59, 130, 246, 0.1);
+            color: #bfdbfe;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* КНОПКИ */
+
         .buttons {
-            flex-direction: column;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 25px;
+            padding-top: 21px;
+            border-top: 1px solid #293853;
         }
 
         .button {
-            width: 100%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            min-height: 42px;
+            padding: 11px 15px;
+            border: 1px solid transparent;
+            border-radius: 10px;
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 700;
+            line-height: 1.4;
+            transition: 0.2s ease;
         }
-    }
-</style>
 
+        .button:hover {
+            filter: brightness(1.12);
+            transform: translateY(-1px);
+        }
+
+        .register {
+            background: #15803d;
+        }
+
+        .applications {
+            background: linear-gradient(110deg, #7c3aed, #635bdf);
+        }
+
+        .draw {
+            background: #b7791f;
+        }
+
+        .bracket {
+            background: linear-gradient(110deg, #3b82f6, #7059e8);
+        }
+
+        .edit {
+            border-color: #155e75;
+            background: rgba(8, 145, 178, 0.15);
+            color: #67e8f9;
+        }
+
+        .delete {
+            border-color: #633344;
+            background: rgba(244, 63, 94, 0.1);
+            color: #fb7185;
+        }
+
+        .draw-form {
+            display: inline-flex;
+            margin: 0;
+        }
+
+        .back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 3px;
+            padding: 11px 15px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--panel);
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.2s ease;
+        }
+
+        .back:hover {
+            border-color: #496796;
+            background: #1a2740;
+            color: white;
+        }
+
+        @media (max-width: 700px) {
+            .container {
+                padding: 24px 15px 40px;
+            }
+
+            .header-card {
+                padding: 25px 20px;
+                border-radius: 19px;
+            }
+
+            .info-card {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-heading h2,
+            .section-header h2 {
+                font-size: 19px;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+
+            .button,
+            .draw-form,
+            .draw-form .button {
+                width: 100%;
+            }
+
+            .back {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                transition: none !important;
+            }
+        }
+    </style>
 </head>
 
 <body>
-
 <div class="container">
 
-{% if messages %}
-    {% for message in messages %}
-        <div class="message">
-            {{ message }}
-        </div>
-    {% endfor %}
-{% endif %}
-
-<div class="header-card">
-
-    <h1>
-        🏆 {{ tournament.name }}
-    </h1>
-
-    <div class="subtitle">
-        🎮 {{ tournament.game }}
-    </div>
-
-    {% if request.user.id == tournament.organizer_id %}
-        <div class="organizer-box">
-            👑 Вы организатор этого турнира.
-        </div>
-    {% endif %}
-
-</div>
-
-<div class="info-card">
-
-    <div class="info-grid">
-
-        <div class="info-row">
-            <div class="label">🎮 Игра</div>
-            <div class="value">
-                {{ tournament.game }}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="message">
+                {{ message }}
             </div>
-        </div>
-
-        <div class="info-row">
-            <div class="label">👥 Размер команды</div>
-            <div class="value">
-                {{ tournament.team_size }} игрока
-            </div>
-        </div>
-
-        <div class="info-row">
-            <div class="label">🏆 Максимум команд</div>
-            <div class="value">
-                {{ tournament.max_teams }}
-            </div>
-        </div>
-
-        <div class="info-row">
-            <div class="label">📅 Дата проведения</div>
-            <div class="value">
-                {{ tournament.tournament_date|date:"d.m.Y H:i" }}
-            </div>
-        </div>
-
-        <div class="info-row">
-            <div class="label">⏰ Регистрация до</div>
-            <div class="value">
-                {{ tournament.registration_deadline|date:"d.m.Y H:i" }}
-            </div>
-        </div>
-
-        <div class="info-row">
-            <div class="label">📌 Статус</div>
-            <div class="value">
-
-                {% if tournament.status == "registration" %}
-                    <span class="status">
-                        {{ tournament.get_status_display }}
-                    </span>
-
-                {% elif tournament.status == "started" %}
-                    <span class="status started">
-                        {{ tournament.get_status_display }}
-                    </span>
-
-                {% elif tournament.status == "finished" %}
-                    <span class="status finished">
-                        {{ tournament.get_status_display }}
-                    </span>
-
-                {% else %}
-                    <span class="status">
-                        {{ tournament.get_status_display }}
-                    </span>
-                {% endif %}
-
-            </div>
-        </div>
-
-    </div>
-
-</div>
-
-<div class="info-card">
-
-    <div class="rules-title">
-        📝 Правила турнира
-    </div>
-
-    <div class="rules">
-        {{ tournament.rules }}
-    </div>
-
-</div>
-
-<div class="section">
-
-    <div class="section-header">
-
-        <h2>
-            👥 Зарегистрированные команды
-        </h2>
-
-    </div>
-
-    {% if registrations %}
-
-        {% for registration in registrations %}
-
-            <div class="team">
-
-                <div class="team-name">
-                    🛡️ {{ registration.team.name }}
-                </div>
-
-                <div class="captain">
-                    👑 Капитан:
-                    {{ registration.team.captain.username }}
-                </div>
-
-                {% if registration.status == "accepted" %}
-
-                    <span class="application-status accepted">
-                        ✓ Заявка принята
-                    </span>
-
-                {% elif registration.status == "pending" %}
-
-                    <span class="application-status pending">
-                        ⏳ На рассмотрении
-                    </span>
-
-                {% elif registration.status == "rejected" %}
-
-                    <span class="application-status rejected">
-                        ✕ Отклонена
-                    </span>
-
-                {% endif %}
-
-            </div>
-
         {% endfor %}
-
-    {% else %}
-
-        <div class="empty">
-            Пока ни одна команда не зарегистрирована.
-        </div>
-
     {% endif %}
 
-</div>
+    <header class="header-card">
+        <div class="eyebrow">⚡ Арена соревнований</div>
 
-<div class="buttons">
+        <h1>🏆 {{ tournament.name }}</h1>
 
-    {% if is_organizer %}
+        <div class="subtitle">
+            🎮 {{ tournament.game }}
+        </div>
 
-        <a
-            class="button applications"
-            href="{% url 'tournament_applications' tournament.id %}"
-        >
-            📋 Управление заявками
-        </a>
+        {% if is_organizer %}
+            <div class="organizer-box">
+                👑 Вы организатор этого турнира
+            </div>
+        {% endif %}
+    </header>
 
-        {% if tournament.status == "registration" %}
+    <section class="info-card">
+        <div class="section-heading">
+            <div class="section-icon">📊</div>
+            <div>
+                <h2>Информация о турнире</h2>
+                <p class="section-subtitle">
+                    Основные данные соревнования
+                </p>
+            </div>
+        </div>
 
-            <form
-                method="post"
-                action="{% url 'tournament_draw' tournament.id %}"
-                style="display:inline;"
-            >
-                {% csrf_token %}
+        <div class="info-grid">
+            <div class="info-row">
+                <div class="label">🎮 Игра</div>
+                <div class="value">{{ tournament.game }}</div>
+            </div>
 
-                <button
-                    type="submit"
-                    class="button draw"
-                    onclick="return confirm('Создать сетку турнира?');"
-                >
-                    🎲 Создать сетку
-                </button>
-            </form>
+            <div class="info-row">
+                <div class="label">👥 Размер команды</div>
+                <div class="value">
+                    {{ tournament.get_team_size_display }}
+                </div>
+            </div>
+
+            <div class="info-row">
+                <div class="label">🏆 Максимум команд</div>
+                <div class="value">{{ tournament.max_teams }}</div>
+            </div>
+
+            <div class="info-row">
+                <div class="label">📅 Дата проведения</div>
+                <div class="value">
+                    {{ tournament.tournament_date|date:"d.m.Y H:i" }}
+                </div>
+            </div>
+
+            <div class="info-row">
+                <div class="label">⏰ Регистрация до</div>
+                <div class="value">
+                    {{ tournament.registration_deadline|date:"d.m.Y H:i" }}
+                </div>
+            </div>
+
+            <div class="info-row">
+                <div class="label">📌 Статус турнира</div>
+                <div class="value">
+                    {% if tournament.status == "registration" %}
+                        <span class="status">
+                            ⏳ {{ tournament.get_status_display }}
+                        </span>
+                    {% elif tournament.status == "started" %}
+                        <span class="status started">
+                            ⚔️ {{ tournament.get_status_display }}
+                        </span>
+                    {% elif tournament.status == "finished" %}
+                        <span class="status finished">
+                            🏆 {{ tournament.get_status_display }}
+                        </span>
+                    {% else %}
+                        <span class="status">
+                            {{ tournament.get_status_display }}
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="info-card">
+        <div class="section-heading">
+            <div class="section-icon">📝</div>
+            <div>
+                <h2>Правила турнира</h2>
+                <p class="section-subtitle">
+                    Ознакомься с правилами перед участием
+                </p>
+            </div>
+        </div>
+
+        <div class="rules">{% if tournament.rules %}{{ tournament.rules }}{% else %}<span class="rules-empty">Организатор пока не добавил правила турнира.</span>{% endif %}</div>
+    </section>
+
+    <section class="section">
+        <div class="section-header">
+            <h2>👥 Зарегистрированные команды</h2>
+            <p class="section-subtitle">
+                Список заявок на участие в соревновании
+            </p>
+        </div>
+
+        {% if registrations %}
+            {% for registration in registrations %}
+                <article class="team">
+                    <div class="team-name">
+                        🛡️ {{ registration.team.name }}
+                    </div>
+
+                    <div class="captain">
+                        👑 Капитан:
+                        {{ registration.team.captain.username }}
+                    </div>
+
+                    {% if registration.status == "accepted" %}
+                        <span class="application-status accepted">
+                            ✓ Заявка принята
+                        </span>
+                    {% elif registration.status == "pending" %}
+                        <span class="application-status pending">
+                            ⏳ На рассмотрении
+                        </span>
+                    {% elif registration.status == "rejected" %}
+                        <span class="application-status rejected">
+                            ✕ Отклонена
+                        </span>
+                    {% endif %}
+                </article>
+            {% endfor %}
+        {% else %}
+            <div class="empty">
+                <span class="empty-icon">🎮</span>
+                Пока ни одна команда не зарегистрирована.
+            </div>
+        {% endif %}
+    </section>
+
+    <div class="buttons">
+
+        {% if is_organizer %}
+
+            <a class="button applications"
+               href="{% url 'tournament_applications' tournament.id %}">
+                📋 Управление заявками
+            </a>
+
+            {% if tournament.status == "registration" %}
+                <form method="post"
+                      action="{% url 'tournament_draw' tournament.id %}"
+                      class="draw-form"
+                      onsubmit="return confirm('Создать сетку турнира?');">
+                    {% csrf_token %}
+                    <button type="submit" class="button draw">
+                        🎲 Создать сетку
+                    </button>
+                </form>
+            {% else %}
+                <a class="button bracket"
+                   href="{% url 'tournament_bracket' tournament.id %}">
+                    ⚔️ Открыть сетку
+                </a>
+            {% endif %}
+
+            <a class="button edit"
+               href="{% url 'tournament_edit' tournament.id %}">
+                ✏️ Изменить
+            </a>
+
+            <a class="button delete"
+               href="{% url 'tournament_delete' tournament.id %}">
+                🗑️ Удалить
+            </a>
 
         {% else %}
 
-            <a
-                class="button bracket"
-                href="{% url 'tournament_bracket' tournament.id %}"
-            >
-                ⚔️ Открыть сетку
-            </a>
+            {% if user.is_authenticated and tournament.status == "registration" %}
+                {% if user_teams %}
+                    <a class="button register"
+                       href="{% url 'tournament_register' tournament.id %}">
+                        📝 Подать заявку
+                    </a>
+                {% else %}
+                    <a class="button bracket"
+                       href="{% url 'team_list' %}">
+                        👥 Сначала создай команду
+                    </a>
+                {% endif %}
+            {% endif %}
 
-        {% endif %}
-
-        <a
-            class="button edit"
-            href="{% url 'tournament_edit' tournament.id %}"
-        >
-            ✏️ Изменить
-        </a>
-
-        <a
-            class="button delete"
-            href="{% url 'tournament_delete' tournament.id %}"
-        >
-            🗑️ Удалить
-        </a>
-
-    {% else %}
-
-        {% if user.is_authenticated and tournament.status == "registration" %}
-
-            {% if user_teams %}
-
-                <a
-                    class="button register"
-                    href="{% url 'tournament_register' tournament.id %}"
-                >
-                    📝 Подать заявку
+            {% if tournament.status != "registration" %}
+                <a class="button bracket"
+                   href="{% url 'tournament_bracket' tournament.id %}">
+                    ⚔️ Открыть сетку
                 </a>
-
             {% endif %}
 
         {% endif %}
 
-        {% if tournament.status != "registration" %}
+    </div>
 
-            <a
-                class="button bracket"
-                href="{% url 'tournament_bracket' tournament.id %}"
-            >
-                ⚔️ Открыть сетку
-            </a>
-
-        {% endif %}
-
-    {% endif %}
+    <a class="back" href="{% url 'tournament_list' %}">
+        ← Вернуться к турнирам
+    </a>
 
 </div>
-
-<a
-    class="back"
-    href="{% url 'tournament_list' %}"
->
-    ← Вернуться к турнирам
-</a>
-
-</div>
-
 </body>
 </html>

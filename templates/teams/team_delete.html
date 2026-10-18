@@ -1,218 +1,236 @@
 <!DOCTYPE html>
-
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Удаление команды — TournamentHub</title>
+    <title>Удаление турнира — TournamentHub</title>
 
-<style>
-    * {
-        box-sizing: border-box;
-    }
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-    body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background:
-            radial-gradient(
-                circle at top right,
-                rgba(220, 38, 38, 0.08),
-                transparent 35%
-            ),
-            #f5f7fb;
-        color: #1f2937;
-    }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(239, 68, 68, 0.12),
+                    transparent 35%
+                ),
+                #090d18;
+            color: #e5e7eb;
+        }
 
-    .container {
-        max-width: 600px;
-        margin: 90px auto;
-        padding: 20px;
-    }
-
-    .card {
-        background: white;
-        border: 1px solid #e5e7eb;
-        border-radius: 20px;
-        padding: 35px;
-        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
-        text-align: center;
-    }
-
-    .icon {
-        width: 70px;
-        height: 70px;
-        margin: 0 auto 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        background: #fee2e2;
-        font-size: 32px;
-    }
-
-    h1 {
-        margin: 0 0 15px;
-        color: #111827;
-        font-size: 28px;
-    }
-
-    .team-name {
-        color: #dc2626;
-        font-weight: bold;
-    }
-
-    .warning {
-        margin: 25px 0;
-        padding: 18px;
-        background: #fff1f2;
-        border: 1px solid #fecdd3;
-        border-radius: 12px;
-        color: #9f1239;
-        line-height: 1.6;
-    }
-
-    .warning strong {
-        display: block;
-        margin-bottom: 8px;
-    }
-
-    .warning p {
-        margin: 6px 0;
-        font-size: 14px;
-    }
-
-    .buttons {
-        display: flex;
-        justify-content: center;
-        gap: 12px;
-        margin-top: 25px;
-    }
-
-    button,
-    .cancel {
-        min-width: 150px;
-        padding: 12px 20px;
-        border-radius: 10px;
-        font-size: 15px;
-        font-weight: 600;
-        cursor: pointer;
-        text-decoration: none;
-        transition: 0.2s;
-    }
-
-    button {
-        border: none;
-        background: #dc2626;
-        color: white;
-    }
-
-    button:hover {
-        background: #b91c1c;
-        transform: translateY(-1px);
-    }
-
-    .cancel {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        background: #f3f4f6;
-        color: #374151;
-        border: 1px solid #e5e7eb;
-    }
-
-    .cancel:hover {
-        background: #e5e7eb;
-        transform: translateY(-1px);
-    }
-
-    @media (max-width: 600px) {
         .container {
-            margin: 40px auto;
-            padding: 15px;
+            width: 100%;
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 65px 20px 40px;
         }
 
         .card {
-            padding: 25px 20px;
+            padding: 35px;
+            background: #151e30;
+            border: 1px solid #293853;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+            text-align: center;
+        }
+
+        .icon {
+            width: 76px;
+            height: 76px;
+            margin: 0 auto 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(220, 38, 38, 0.13);
+            border: 1px solid #7f303b;
+            border-radius: 20px;
+            font-size: 34px;
         }
 
         h1 {
-            font-size: 24px;
+            margin: 0 0 16px;
+            color: #f8fafc;
+            font-size: 28px;
+            line-height: 1.35;
+        }
+
+        .subtitle {
+            margin: 0;
+            color: #9caec8;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .tournament-name {
+            color: #f87171;
+            font-weight: bold;
+            overflow-wrap: anywhere;
+        }
+
+        .warning {
+            margin: 27px 0;
+            padding: 20px;
+            background: rgba(127, 29, 29, 0.18);
+            border: 1px solid #71333d;
+            border-radius: 13px;
+            color: #fecaca;
+            text-align: left;
+            line-height: 1.7;
+        }
+
+        .warning-title {
+            display: block;
+            margin-bottom: 12px;
+            color: #fca5a5;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .warning p {
+            margin: 9px 0;
+            font-size: 14px;
+        }
+
+        .danger-text {
+            margin-top: 15px !important;
+            padding-top: 13px;
+            border-top: 1px solid #71333d;
+            color: #f87171;
+            font-weight: bold;
         }
 
         .buttons {
-            flex-direction: column;
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 26px;
         }
 
-        button,
+        .delete-form {
+            margin: 0;
+        }
+
+        .delete-button,
         .cancel {
-            width: 100%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 46px;
+            padding: 12px 18px;
+            border-radius: 10px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: 0.2s;
         }
-    }
-</style>
 
+        .delete-button {
+            border: 1px solid #ef4444;
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            color: white;
+            cursor: pointer;
+        }
+
+        .delete-button:hover {
+            background: linear-gradient(135deg, #b91c1c, #991b1b);
+            transform: translateY(-2px);
+            box-shadow: 0 7px 18px rgba(220, 38, 38, 0.2);
+        }
+
+        .cancel {
+            border: 1px solid #354764;
+            background: #1b2940;
+            color: #dbeafe;
+        }
+
+        .cancel:hover {
+            background: #243651;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 12px;
+            }
+
+            .card {
+                padding: 25px 18px;
+                border-radius: 16px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+
+            .delete-form,
+            .delete-button,
+            .cancel {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 
 <body>
+    <main class="container">
+        <section class="card">
+            <div class="icon">🗑️</div>
 
-<div class="container">
+            <h1>Удаление турнира</h1>
 
-<div class="card">
+            <p class="subtitle">
+                Вы собираетесь удалить турнир
+                <span class="tournament-name">
+                    «{{ tournament.name }}»
+                </span>.
+            </p>
 
-    <div class="icon">
-        🗑️
-    </div>
+            <div class="warning">
+                <strong class="warning-title">
+                    ⚠️ Внимание! Перед удалением
+                </strong>
 
-    <h1>Удаление команды</h1>
+                <p>
+                    Удаление турнира может привести к потере
+                    связанных заявок, сетки и результатов матчей.
+                </p>
 
-    <div class="warning">
+                <p class="danger-text">
+                    Это действие может быть необратимым.
+                </p>
+            </div>
 
-        <strong>
-            Вы действительно хотите удалить команду
-            <span class="team-name">
-                «{{ team.name }}»
-            </span>?
-        </strong>
+            <div class="buttons">
+                <form method="post" class="delete-form">
+                    {% csrf_token %}
 
-        <p>
-            Все участники и приглашения этой команды
-            будут удалены.
-        </p>
+                    <button type="submit" class="delete-button">
+                        🗑️ Да, удалить турнир
+                    </button>
+                </form>
 
-        <p>
-            Если команда участвует в турнирах,
-            связанные заявки также могут быть удалены.
-        </p>
-
-        <p>
-            <strong>Это действие нельзя отменить.</strong>
-        </p>
-
-    </div>
-
-    <div class="buttons">
-
-        <form method="post">
-            {% csrf_token %}
-
-            <button type="submit">
-                🗑️ Да, удалить команду
-            </button>
-        </form>
-
-        <a
-            class="cancel"
-            href="{% url 'team_detail' team.id %}"
-        >
-            ← Отмена
-        </a>
-
-    </div>
-
-</div>
-
-</div>
-
+                <a
+                    class="cancel"
+                    href="{% url 'tournament_detail' tournament_id=tournament.id %}"
+                >
+                    ← Отмена
+                </a>
+            </div>
+        </section>
+    </main>
 </body>
 </html>

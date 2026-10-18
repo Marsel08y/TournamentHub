@@ -1,188 +1,257 @@
 <!DOCTYPE html>
-
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Создать команду — TournamentHub</title>
+    <title>Создать команду — TournamentHub</title>
 
-<style>
-    * {
-        box-sizing: border-box;
-    }
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-    body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background: #f4f6fb;
-        color: #1f2937;
-    }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background:
+                radial-gradient(circle at top right, rgba(79, 70, 229, 0.15), transparent 35%),
+                #090d18;
+            color: #e8edf8;
+        }
 
-    .page {
-        max-width: 750px;
-        margin: 0 auto;
-        padding: 40px 20px;
-    }
-
-    .card {
-        background: white;
-        border-radius: 20px;
-        padding: 32px;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.07);
-    }
-
-    .header {
-        margin-bottom: 28px;
-    }
-
-    .header h1 {
-        margin: 0 0 10px;
-        font-size: 30px;
-        color: #111827;
-    }
-
-    .header p {
-        margin: 0;
-        color: #6b7280;
-        font-size: 15px;
-    }
-
-    form p {
-        margin: 0 0 20px;
-    }
-
-    label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: bold;
-        color: #374151;
-    }
-
-    input,
-    textarea,
-    select {
-        width: 100%;
-        padding: 13px 14px;
-        border: 1px solid #d1d5db;
-        border-radius: 10px;
-        background: white;
-        color: #1f2937;
-        font-size: 15px;
-        font-family: Arial, sans-serif;
-        outline: none;
-    }
-
-    input:focus,
-    textarea:focus,
-    select:focus {
-        border-color: #2563eb;
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
-    }
-
-    .helptext {
-        display: block;
-        margin-top: 6px;
-        color: #6b7280;
-        font-size: 13px;
-    }
-
-    .errorlist {
-        margin: 7px 0 0;
-        padding-left: 20px;
-        color: #dc2626;
-        font-size: 14px;
-    }
-
-    .buttons {
-        display: flex;
-        gap: 12px;
-        margin-top: 28px;
-        padding-top: 22px;
-        border-top: 1px solid #e5e7eb;
-    }
-
-    .create-button {
-        border: none;
-        padding: 13px 20px;
-        border-radius: 10px;
-        background: #2563eb;
-        color: white;
-        font-size: 15px;
-        font-weight: bold;
-        cursor: pointer;
-    }
-
-    .create-button:hover {
-        background: #1d4ed8;
-    }
-
-    .back-button {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        padding: 13px 18px;
-        border-radius: 10px;
-        background: #f3f4f6;
-        color: #374151;
-        text-decoration: none;
-        font-size: 15px;
-        font-weight: bold;
-    }
-
-    .back-button:hover {
-        background: #e5e7eb;
-    }
-
-    @media (max-width: 600px) {
         .page {
-            padding: 20px 12px;
+            width: 100%;
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 40px 20px;
         }
 
         .card {
-            padding: 22px;
+            padding: 32px;
+            background: #151e30;
+            border: 1px solid #293853;
+            border-radius: 20px;
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.22);
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            margin-bottom: 20px;
+            border: 1px solid #4941a3;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #24245a, #34215c);
+            font-size: 29px;
         }
 
         .header h1 {
-            font-size: 25px;
+            margin: 0 0 12px;
+            color: #ffffff;
+            font-size: 30px;
+        }
+
+        .header p {
+            margin: 0;
+            color: #a5b4cc;
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        form p {
+            margin: 0 0 23px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 9px;
+            color: #e2e8f0;
+            font-weight: bold;
+        }
+
+        input,
+        textarea,
+        select {
+            display: block;
+            width: 100%;
+            padding: 14px 15px;
+            border: 1px solid #344766;
+            border-radius: 10px;
+            background: #0e1626;
+            color: #f1f5f9;
+            font-family: Arial, sans-serif;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #818cf8;
+            box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.15);
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: #64748b;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        select option {
+            background: #151e30;
+            color: #f1f5f9;
+        }
+
+        .helptext {
+            display: block;
+            margin-top: 8px;
+            color: #94a3b8;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .errorlist {
+            margin: 8px 0 0;
+            padding: 12px 15px 12px 32px;
+            border: 1px solid #7f2939;
+            border-radius: 9px;
+            background: rgba(127, 29, 29, 0.2);
+            color: #fca5a5;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .form-errors {
+            margin-bottom: 22px;
+            padding: 14px 16px;
+            border: 1px solid #7f2939;
+            border-radius: 10px;
+            background: rgba(127, 29, 29, 0.2);
+            color: #fca5a5;
+            line-height: 1.6;
         }
 
         .buttons {
-            flex-direction: column;
+            display: flex;
+            gap: 12px;
+            margin-top: 28px;
+            padding-top: 23px;
+            border-top: 1px solid #293853;
         }
 
         .create-button,
         .back-button {
-            width: 100%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 48px;
+            padding: 13px 20px;
+            border-radius: 10px;
+            font-family: Arial, sans-serif;
+            font-size: 15px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            transition: 0.2s ease;
         }
-    }
-</style>
 
+        .create-button {
+            flex: 1;
+            border: 1px solid transparent;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+        }
+
+        .create-button:hover {
+            transform: translateY(-1px);
+            background: linear-gradient(135deg, #4338ca, #6d28d9);
+            box-shadow: 0 8px 22px rgba(99, 102, 241, 0.2);
+        }
+
+        .back-button {
+            border: 1px solid #34445f;
+            background: #1b2940;
+            color: #e2e8f0;
+        }
+
+        .back-button:hover {
+            background: #263852;
+        }
+
+        @media (max-width: 600px) {
+            .page {
+                padding: 22px 12px;
+            }
+
+            .card {
+                padding: 23px 18px;
+            }
+
+            .header h1 {
+                font-size: 25px;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+
+            .create-button,
+            .back-button {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 
 <body>
+    <main class="page">
+        <section class="card">
+            <div class="header">
+                <div class="icon">👥</div>
 
-<div class="page">
+                <h1>Создать команду</h1>
 
-<div class="card">
+                <p>
+                    Создайте собственную команду, приглашайте игроков
+                    и участвуйте в турнирах TournamentHub.
+                </p>
+            </div>
 
-    <div class="header">
-        <h1>👥 Создать команду</h1>
+            <form method="post">
+                {% csrf_token %}
 
-        <p>
-            Создайте команду, чтобы участвовать в турнирах TournamentHub.
-        </p>
-    </div>
+                {% if form.non_field_errors %}
+                    <div class="form-errors">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
 
+                {{ form.as_p }}
 
-    <form method="post">
+                <div class="buttons">
+                    <button type="submit" class="create-button">
+                        🚀 Создать команду
+                    </button>
 
-        {% csrf_token %}
-
-        {{ form.as_p }}
-
-
-        <div class="buttons">
-
-            <button
-                type="submit"
+                    <a href="{% url 'team_list' %}" class="back-button">
+                        ← Назад к командам
+                    </a>
+                </div>
+            </form>
+        </section>
+    </main>
+</body>
+</html>
