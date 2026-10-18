@@ -1,53 +1,82 @@
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>Мой профиль</title>
+    <title>Мой профиль — TournamentHub</title>
 
     <style>
-
         * {
             box-sizing: border-box;
         }
 
         body {
             margin: 0;
-            padding: 40px;
+            min-height: 100vh;
+            padding: 40px 20px;
             font-family: Arial, sans-serif;
-            background: #f5f7fb;
+            color: #e8edf8;
+            background:
+                radial-gradient(circle at top right, rgba(79, 70, 229, 0.17), transparent 35%),
+                radial-gradient(circle at bottom left, rgba(37, 99, 235, 0.10), transparent 35%),
+                #090d18;
         }
 
         .container {
-            max-width: 700px;
-            margin: auto;
-            background: white;
+            width: 100%;
+            max-width: 760px;
+            margin: 0 auto;
             padding: 35px;
-            border-radius: 15px;
+            background: #151e30;
+            border: 1px solid #293853;
+            border-radius: 20px;
+            box-shadow: 0 20px 55px rgba(0, 0, 0, 0.25);
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+
+        .avatar {
+            flex-shrink: 0;
+            width: 65px;
+            height: 65px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #3730a3, #7c3aed);
+            border: 1px solid #6255d8;
+            border-radius: 18px;
+            font-size: 31px;
         }
 
         h1 {
-            margin-top: 0;
-            color: #2563eb;
+            margin: 0 0 8px;
+            color: #ffffff;
+            font-size: 30px;
+        }
+
+        .subtitle {
+            margin: 0;
+            color: #9caec8;
+            font-size: 14px;
+            line-height: 1.6;
         }
 
         .profile-card {
-            background: #f1f3f7;
-            border-radius: 12px;
-            padding: 25px;
-            margin-top: 25px;
+            padding: 12px 24px;
+            background: #0e1626;
+            border: 1px solid #293853;
+            border-radius: 15px;
         }
 
         .row {
-            padding: 15px 0;
-            border-bottom: 1px solid #ddd;
+            padding: 18px 0;
+            border-bottom: 1px solid #293853;
         }
 
         .row:last-child {
@@ -55,212 +84,230 @@
         }
 
         .label {
-            color: #777;
-            font-size: 14px;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            color: #94a3b8;
+            font-size: 13px;
         }
 
         .value {
-            font-size: 18px;
+            color: #f1f5f9;
+            font-size: 17px;
             font-weight: bold;
+            overflow-wrap: anywhere;
+        }
+
+        .username {
+            color: #a5b4fc;
         }
 
         .role {
-            display: inline-block;
-            padding: 8px 14px;
-            border-radius: 8px;
-            background: #2563eb;
-            color: white;
-            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 8px 13px;
+            border: 1px solid #4941a3;
+            border-radius: 9px;
+            background: rgba(79, 70, 229, 0.17);
+            color: #c7d2fe;
+            font-size: 14px;
         }
 
         .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 11px;
             margin-top: 25px;
+            padding-top: 23px;
+            border-top: 1px solid #293853;
         }
 
         .button {
-            display: inline-block;
-            padding: 12px 18px;
-            margin-right: 8px;
-            margin-bottom: 8px;
-            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 44px;
+            padding: 12px 16px;
+            border: 1px solid transparent;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
             text-decoration: none;
+            transition: 0.2s ease;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.12);
         }
 
         .teams {
-            background: #2563eb;
+            background: #1d4ed8;
+            border-color: #2563eb;
             color: white;
         }
 
         .tournaments {
-            background: #16a34a;
-            color: white;
+            background: #166534;
+            border-color: #15803d;
+            color: #dcfce7;
         }
 
         .admin {
-            background: #7c3aed;
+            background: #5b21b6;
+            border-color: #7c3aed;
             color: white;
         }
 
         .home {
-            background: #e5e7eb;
-            color: #333;
+            background: #202c42;
+            border-color: #354764;
+            color: #dbeafe;
         }
 
         .logout {
-            background: #dc2626;
-            color: white;
+            background: rgba(185, 28, 28, 0.17);
+            border-color: #7f2939;
+            color: #fca5a5;
         }
 
-    </style>
+        .footer-note {
+            margin-top: 22px;
+            color: #64748b;
+            font-size: 12px;
+            text-align: center;
+        }
 
+        @media (max-width: 600px) {
+            body {
+                padding: 22px 12px;
+            }
+
+            .container {
+                padding: 23px 17px;
+                border-radius: 16px;
+            }
+
+            .header {
+                align-items: flex-start;
+                gap: 13px;
+            }
+
+            .avatar {
+                width: 52px;
+                height: 52px;
+                border-radius: 14px;
+                font-size: 25px;
+            }
+
+            h1 {
+                font-size: 25px;
+            }
+
+            .profile-card {
+                padding: 8px 17px;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+
+            .button {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 
 <body>
+    <main class="container">
 
-<div class="container">
+        <header class="header">
+            <div class="avatar">👤</div>
 
-    <h1>👤 Мой профиль</h1>
+            <div>
+                <h1>Мой профиль</h1>
+                <p class="subtitle">
+                    Информация о твоём аккаунте TournamentHub
+                </p>
+            </div>
+        </header>
 
+        <section class="profile-card">
 
-    <div class="profile-card">
-
-        <div class="row">
-
-            <div class="label">
-                Имя пользователя
+            <div class="row">
+                <div class="label">Имя пользователя</div>
+                <div class="value username">
+                    {{ request.user.username }}
+                </div>
             </div>
 
-            <div class="value">
-                {{ request.user.username }}
+            <div class="row">
+                <div class="label">Имя</div>
+                <div class="value">
+                    {{ request.user.first_name|default:"Не указано" }}
+                </div>
             </div>
 
-        </div>
-
-
-        <div class="row">
-
-            <div class="label">
-                Имя
+            <div class="row">
+                <div class="label">Фамилия</div>
+                <div class="value">
+                    {{ request.user.last_name|default:"Не указана" }}
+                </div>
             </div>
 
-            <div class="value">
-                {{ request.user.first_name }}
+            <div class="row">
+                <div class="label">Email</div>
+                <div class="value">
+                    {{ request.user.email|default:"Не указан" }}
+                </div>
             </div>
 
-        </div>
+            <div class="row">
+                <div class="label">Роль</div>
+                <div class="value">
 
+                    {% if request.user.profile.role == "organizer" %}
+                        <span class="role">🏆 Организатор</span>
+                    {% elif request.user.profile.role == "admin" %}
+                        <span class="role">🛡️ Администратор</span>
+                    {% else %}
+                        <span class="role">👤 Участник</span>
+                    {% endif %}
 
-        <div class="row">
-
-            <div class="label">
-                Фамилия
+                </div>
             </div>
 
-            <div class="value">
-                {{ request.user.last_name }}
-            </div>
+        </section>
 
-        </div>
-
-
-        <div class="row">
-
-            <div class="label">
-                Email
-            </div>
-
-            <div class="value">
-                {{ request.user.email }}
-            </div>
-
-        </div>
-
-
-        <div class="row">
-
-            <div class="label">
-                Роль
-            </div>
-
-            <div class="value">
-
-                {% if request.user.profile.role == "organizer" %}
-
-                    <span class="role">
-                        🏆 Организатор
-                    </span>
-
-                {% elif request.user.profile.role == "admin" %}
-
-                    <span class="role">
-                        🛡️ Администратор
-                    </span>
-
-                {% else %}
-
-                    <span class="role">
-                        👤 Участник
-                    </span>
-
-                {% endif %}
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="buttons">
-
-        <a
-            class="button teams"
-            href="{% url 'team_list' %}"
-        >
-            👥 Мои команды
-        </a>
-
-
-        <a
-            class="button tournaments"
-            href="{% url 'tournament_list' %}"
-        >
-            🏆 Турниры
-        </a>
-
-
-        {% if request.user.profile.role == "admin" %}
-
-            <a
-                class="button admin"
-                href="{% url 'manage_users' %}"
-            >
-                🛡️ Управление пользователями
+        <nav class="buttons">
+            <a class="button teams" href="{% url 'team_list' %}">
+                👥 Мои команды
             </a>
 
-        {% endif %}
+            <a class="button tournaments" href="{% url 'tournament_list' %}">
+                🏆 Турниры
+            </a>
 
+            {% if request.user.profile.role == "admin" %}
+                <a class="button admin" href="{% url 'manage_users' %}">
+                    🛡️ Управление пользователями
+                </a>
+            {% endif %}
 
-        <a
-            class="button home"
-            href="{% url 'home' %}"
-        >
-            🏠 На главную
-        </a>
+            <a class="button home" href="{% url 'home' %}">
+                🏠 На главную
+            </a>
 
+            <a class="button logout" href="{% url 'logout' %}">
+                🚪 Выйти
+            </a>
+        </nav>
 
-        <a
-            class="button logout"
-            href="{% url 'logout' %}"
-        >
-            🚪 Выйти
-        </a>
+        <div class="footer-note">
+            TournamentHub · Твоя игровая площадка
+        </div>
 
-    </div>
-
-</div>
-
+    </main>
 </body>
-
 </html>
