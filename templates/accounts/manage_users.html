@@ -1,19 +1,12 @@
+
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Управление пользователями</title>
 
     <style>
-
         * {
             box-sizing: border-box;
         }
@@ -43,20 +36,20 @@
             margin-bottom: 25px;
         }
 
-        .success {
+        .success, .error {
             padding: 12px;
             margin-bottom: 20px;
-            background: #dcfce7;
-            color: #166534;
             border-radius: 8px;
         }
 
+        .success {
+            background: #dcfce7;
+            color: #166534;
+        }
+
         .error {
-            padding: 12px;
-            margin-bottom: 20px;
             background: #fee2e2;
             color: #991b1b;
-            border-radius: 8px;
         }
 
         .user {
@@ -70,6 +63,7 @@
             font-size: 20px;
             font-weight: bold;
             margin-bottom: 8px;
+            overflow-wrap: anywhere;
         }
 
         .email {
@@ -82,25 +76,34 @@
             font-weight: bold;
         }
 
-        form {
+        .actions {
             display: flex;
             gap: 10px;
             align-items: center;
             flex-wrap: wrap;
         }
 
-        select {
-            padding: 10px;
-            border: 1px solid #ccc;
+        form {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin: 0;
+        }
+
+        select, button {
+            padding: 10px 14px;
             border-radius: 8px;
-            font-size: 15px;
+            font-size: 14px;
+        }
+
+        select {
+            border: 1px solid #ccc;
             background: white;
         }
 
         button {
-            padding: 10px 16px;
             border: none;
-            border-radius: 8px;
             background: #2563eb;
             color: white;
             cursor: pointer;
@@ -108,6 +111,14 @@
 
         button:hover {
             background: #1d4ed8;
+        }
+
+        .delete-button {
+            background: #dc2626;
+        }
+
+        .delete-button:hover {
+            background: #b91c1c;
         }
 
         .you {
@@ -118,6 +129,11 @@
             color: white;
             border-radius: 6px;
             font-size: 12px;
+        }
+
+        .protected {
+            color: #666;
+            font-size: 13px;
         }
 
         .back {
@@ -131,141 +147,115 @@
             color: #2563eb;
         }
 
-    </style>
+        @media (max-width: 600px) {
+            body {
+                padding: 15px;
+            }
 
+            .container {
+                padding: 20px;
+            }
+
+            .actions {
+                align-items: stretch;
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
 
 <body>
-
 <div class="container">
-
     <h1>🛡️ Управление пользователями</h1>
 
     <div class="description">
-        Здесь администратор может назначать пользователям
-        роли участника, организатора или администратора.
+        Здесь администратор может менять роли пользователей
+        и удалять обычные аккаунты.
     </div>
 
-
     {% if messages %}
-
         {% for message in messages %}
-
-            <div
-                class="{% if message.tags == 'error' %}error{% else %}success{% endif %}"
-            >
+            <div class="{% if message.tags == 'error' %}error{% else %}success{% endif %}">
                 {{ message }}
             </div>
-
         {% endfor %}
-
     {% endif %}
 
-
     {% for user in users %}
-
         <div class="user">
-
             <div class="username">
-
                 👤 {{ user.username }}
 
                 {% if user == request.user %}
-
-                    <span class="you">
-                        Это вы
-                    </span>
-
+                    <span class="you">Это вы</span>
                 {% endif %}
-
             </div>
-
 
             <div class="email">
-                📧 {{ user.email }}
+                📧 {{ user.email|default:"Email не указан" }}
             </div>
 
-
             <div class="current-role">
-
                 Текущая роль:
 
                 {% if user.profile.role == "organizer" %}
-
                     🏆 Организатор
-
                 {% elif user.profile.role == "admin" %}
-
                     🛡️ Администратор
-
                 {% else %}
-
                     👤 Участник
-
                 {% endif %}
-
             </div>
 
+            <div class="actions">
+                {% if user != request.user and not user.is_superuser and user.profile.role != "admin" %}
+                    <form method="post"
+                          action="{% url 'change_user_role' user.id %}">
+                        {% csrf_token %}
 
-            <form
-                method="post"
-                action="{% url 'change_user_role' user.id %}"
-            >
+                        <select name="role">
+                            <option value="player"
+                                {% if user.profile.role == "player" %}selected{% endif %}>
+                                Участник
+                            </option>
 
-                {% csrf_token %}
+                            <option value="organizer"
+                                {% if user.profile.role == "organizer" %}selected{% endif %}>
+                                Организатор
+                            </option>
 
-                <select name="role">
+                            <option value="admin"
+                                {% if user.profile.role == "admin" %}selected{% endif %}>
+                                Администратор
+                            </option>
+                        </select>
 
-                    <option
-                        value="player"
-                        {% if user.profile.role == "player" %}
-                            selected
-                        {% endif %}
-                    >
-                        👤 Участник
-                    </option>
+                        <button type="submit">Сохранить роль</button>
+                    </form>
 
-                    <option
-                        value="organizer"
-                        {% if user.profile.role == "organizer" %}
-                            selected
-                        {% endif %}
-                    >
-                        🏆 Организатор
-                    </option>
+                    <form method="post"
+                          action="{% url 'user_delete' user.id %}"
+                          onsubmit="return confirm('Вы действительно хотите удалить этого пользователя? Это действие нельзя отменить.');">
+                        {% csrf_token %}
 
-                    <option
-                        value="admin"
-                        {% if user.profile.role == "admin" %}
-                            selected
-                        {% endif %}
-                    >
-                        🛡️ Администратор
-                    </option>
-
-                </select>
-
-
-                <button type="submit">
-                    Сохранить роль
-                </button>
-
-            </form>
-
+                        <button type="submit" class="delete-button">
+                            🗑️ Удалить пользователя
+                        </button>
+                    </form>
+                {% else %}
+                    <span class="protected">
+                        🔒 Изменение защищённого аккаунта недоступно
+                    </span>
+                {% endif %}
+            </div>
         </div>
-
+    {% empty %}
+        <p>Пользователей пока нет.</p>
     {% endfor %}
 
-
-    <a
-        class="back"
-        href="{% url 'profile' %}"
-    >
+    <a class="back" href="{% url 'profile' %}">
         ← Вернуться в профиль
     </a>
-
 </div>
-
 </body>
-
 </html>

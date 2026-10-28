@@ -1,10 +1,11 @@
+
 from django.contrib import messages
-from django.contrib.auth import login, logout
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.shortcuts import redirect, render
 
-from .forms import RegisterForm
+from .models import Profile
 
 
 def register_view(request):
@@ -12,26 +13,23 @@ def register_view(request):
         return redirect("home")
 
     if request.method == "POST":
-        form = RegisterForm(request.POST)
+        form = UserCreationForm(request.POST)
 
         if form.is_valid():
             user = form.save()
-            login(request, user)
 
-            messages.success(
-                request,
-                "Регистрация прошла успешно!"
+            Profile.objects.get_or_create(
+                user=user,
+                defaults={"role": "player"},
             )
 
+            login(request, user)
+            messages.success(request, "Регистрация прошла успешно.")
             return redirect("home")
     else:
-        form = RegisterForm()
+        form = UserCreationForm()
 
-    return render(
-        request,
-        "registration/register.html",
-        {"form": form}
-    )
+    return render(request, "accounts/register.html", {"form": form})
 
 
 def login_view(request):
@@ -39,46 +37,25 @@ def login_view(request):
         return redirect("home")
 
     if request.method == "POST":
-        form = AuthenticationForm(
-            request,
-            data=request.POST
-        )
+        form = AuthenticationForm(request, data=request.POST)
 
         if form.is_valid():
-            user = form.get_user()
-            login(request, user)
+            login(request, form.get_user())
+            return redirect(request.GET.get("next") or "home")
 
-            messages.success(
-                request,
-                "Вы успешно вошли!"
-            )
-
-            return redirect("home")
+        messages.error(request, "Неверный логин или пароль.")
     else:
-        form = AuthenticationForm()
+        form = AuthenticationForm(request)
 
-    return render(
-        request,
-        "registration/login.html",
-        {"form": form}
-    )
+    return render(request, "accounts/login.html", {"form": form})
 
 
-@login_required
 def logout_view(request):
     logout(request)
-
-    messages.success(
-        request,
-        "Вы вышли из аккаунта."
-    )
-
-    return redirect("home")
+    messages.success(request, "Вы вышли из аккаунта.")
+    return redirect("login")
 
 
 @login_required
 def profile_view(request):
-    return render(
-        request,
-        "accounts/profile.html"
-    )
+    return render(request, "accounts/profile.html", {"profile": getattr(request.user, "profile", None)})
