@@ -1,6 +1,6 @@
 
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.shortcuts import redirect, render
@@ -41,6 +41,7 @@ def login_view(request):
 
         if form.is_valid():
             login(request, form.get_user())
+            messages.success(request, "Вы успешно вошли в аккаунт.")
             return redirect(request.GET.get("next") or "home")
 
         messages.error(request, "Неверный логин или пароль.")
@@ -53,9 +54,15 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     messages.success(request, "Вы вышли из аккаунта.")
-    return redirect("login")
+    return redirect("/")
 
 
 @login_required
 def profile_view(request):
-    return render(request, "accounts/profile.html", {"profile": getattr(request.user, "profile", None)})
+    profile = getattr(request.user, "profile", None)
+
+    return render(
+        request,
+        "accounts/profile.html",
+        {"profile": profile},
+    )
